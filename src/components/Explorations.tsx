@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUpRight, X } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { PERSONAL_INFO } from "../data/portfolioData";
+import { PinterestIcon } from "./icons/PinterestIcon";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,56 +12,57 @@ interface ExplorationItem {
   title: string;
   category: string;
   image: string;
+  pinUrl: string;
   rotation: number;
 }
 
 const explorationItems: ExplorationItem[] = [
   {
-    id: "exp-1",
-    title: "Chroma Form #01",
-    category: "Generative Shader",
-    image:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=85",
+    id: "pin-1",
+    title: "Cosmic Neon Horizon",
+    category: "Dark Aesthetic",
+    image: "https://i.pinimg.com/736x/c2/09/c4/c209c425e1996d696b86f3f054c31099.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777378728765/",
     rotation: -3,
   },
   {
-    id: "exp-2",
-    title: "Voxel Dimension",
+    id: "pin-2",
+    title: "Cybernetic Synth Sphere",
     category: "3D Experiment",
-    image:
-      "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=800&q=85",
+    image: "https://i.pinimg.com/736x/f2/f3/31/f2f33173064ec04c3903ddff5fe25a1e.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777378728565/",
     rotation: 2,
   },
   {
-    id: "exp-3",
-    title: "Brutalist Shadow",
-    category: "Spatial Grid",
-    image:
-      "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=800&q=85",
+    id: "pin-3",
+    title: "Atmospheric 4K Canvas",
+    category: "Digital Art",
+    image: "https://i.pinimg.com/736x/b9/e9/7e/b9e97ea2865ada5b21f12895cd008e79.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777377435682/",
     rotation: -2,
   },
   {
-    id: "exp-4",
-    title: "Liquid Refraction",
-    category: "Raymarching",
-    image:
-      "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=800&q=85",
+    id: "pin-4",
+    title: "Classical Mythology Collage",
+    category: "Visual Collage",
+    image: "https://i.pinimg.com/736x/2e/7b/7e/2e7b7eba70ff40e1ab8b66bf976b1ab9.jpg",
+    pinUrl: "https://www.pinterest.com/pin/966303663822229855/",
     rotation: 3,
   },
   {
-    id: "exp-5",
-    title: "Analog Artifacts",
-    category: "Typography",
-    image:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=85",
+    id: "pin-5",
+    title: "Inferno Angel Wings",
+    category: "Symbolism",
+    image: "https://i.pinimg.com/736x/b7/b9/e2/b7b9e25c8c21038d6834ec1b6bec1ace.jpg",
+    pinUrl: "https://www.pinterest.com/pin/966303663822132583/",
     rotation: -2.5,
   },
   {
-    id: "exp-6",
-    title: "Atmospheric Noise",
-    category: "Procedural Mesh",
-    image:
-      "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=800&q=85",
+    id: "pin-6",
+    title: "Fallen Wings Graphic 111",
+    category: "Dark Typography",
+    image: "https://i.pinimg.com/736x/19/ff/8a/19ff8a1f2b8b516fbc83957ebc7e1e05.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777375802692/",
     rotation: 2,
   },
 ];
@@ -70,19 +72,6 @@ export const Explorations: React.FC = () => {
   const pinnedCenterRef = useRef<HTMLDivElement | null>(null);
   const col1Ref = useRef<HTMLDivElement | null>(null);
   const col2Ref = useRef<HTMLDivElement | null>(null);
-
-  const [activeLightbox, setActiveLightbox] = useState<ExplorationItem | null>(null);
-
-  // Close on ESC key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setActiveLightbox(null);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -170,17 +159,18 @@ export const Explorations: React.FC = () => {
 
           {/* Subtext */}
           <p className="text-sm md:text-base text-muted max-w-sm mx-auto mb-8 leading-relaxed">
-            Unconstrained experiments in generative aesthetics, spatial composition, and WebGL textures.
+            Curated visual artifacts, graphic compositions, and aesthetic moodboards from my Pinterest board.
           </p>
 
-          {/* Dribbble CTA Button */}
+          {/* Pinterest CTA Button */}
           <a
-            href="https://dribbble.com"
+            href={PERSONAL_INFO.pinterest}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 rounded-full px-6 py-3 bg-surface/90 hover:bg-surface border border-stroke text-text-primary text-xs font-medium backdrop-blur-md transition-all duration-300 hover:scale-105"
+            className="group inline-flex items-center gap-2.5 rounded-full px-6 py-3 bg-surface/90 hover:bg-surface border border-stroke hover:border-red-500/40 text-text-primary text-xs font-medium backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-red-500/10"
           >
-            <span>Follow on Dribbble</span>
+            <PinterestIcon className="w-4 h-4 text-[#E60023]" />
+            <span>Explore Pinterest Board</span>
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </div>
@@ -195,13 +185,16 @@ export const Explorations: React.FC = () => {
             className="flex flex-col gap-16 md:gap-32 items-center md:items-start pointer-events-auto"
           >
             {col1Items.map((item) => (
-              <div
+              <a
                 key={item.id}
-                onClick={() => setActiveLightbox(item)}
+                href={item.pinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Open "${item.title}" on Pinterest`}
                 style={{
                   transform: `rotate(${item.rotation}deg)`,
                 }}
-                className="w-full aspect-square max-w-[260px] sm:max-w-[300px] md:max-w-[320px] rounded-3xl bg-surface border border-stroke overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:rotate-0 hover:scale-105 hover:border-white/30 group relative"
+                className="w-full aspect-square max-w-[260px] sm:max-w-[300px] md:max-w-[320px] rounded-3xl bg-surface border border-stroke overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:rotate-0 hover:scale-105 hover:border-red-500/40 group relative block"
               >
                 <img
                   src={item.image}
@@ -209,13 +202,22 @@ export const Explorations: React.FC = () => {
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted">
-                    {item.category}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted flex items-center gap-1.5">
+                      <PinterestIcon className="w-3 h-3 text-[#E60023]" />
+                      {item.category}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
+                      Pin
+                      <ArrowUpRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-white line-clamp-1">
+                    {item.title}
                   </span>
-                  <span className="text-sm font-medium text-white">{item.title}</span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
 
@@ -225,13 +227,16 @@ export const Explorations: React.FC = () => {
             className="flex flex-col gap-20 md:gap-36 items-center md:items-end pointer-events-auto pt-40"
           >
             {col2Items.map((item) => (
-              <div
+              <a
                 key={item.id}
-                onClick={() => setActiveLightbox(item)}
+                href={item.pinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={`Open "${item.title}" on Pinterest`}
                 style={{
                   transform: `rotate(${item.rotation}deg)`,
                 }}
-                className="w-full aspect-square max-w-[260px] sm:max-w-[300px] md:max-w-[320px] rounded-3xl bg-surface border border-stroke overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:rotate-0 hover:scale-105 hover:border-white/30 group relative"
+                className="w-full aspect-square max-w-[260px] sm:max-w-[300px] md:max-w-[320px] rounded-3xl bg-surface border border-stroke overflow-hidden cursor-pointer shadow-2xl transition-all duration-500 hover:rotate-0 hover:scale-105 hover:border-red-500/40 group relative block"
               >
                 <img
                   src={item.image}
@@ -239,73 +244,26 @@ export const Explorations: React.FC = () => {
                   loading="lazy"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted">
-                    {item.category}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted flex items-center gap-1.5">
+                      <PinterestIcon className="w-3 h-3 text-[#E60023]" />
+                      {item.category}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-red-400 bg-red-500/10 px-2 py-0.5 rounded-full border border-red-500/20">
+                      Pin
+                      <ArrowUpRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-white line-clamp-1">
+                    {item.title}
                   </span>
-                  <span className="text-sm font-medium text-white">{item.title}</span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {activeLightbox && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setActiveLightbox(null)}
-            className="fixed inset-0 z-[10000] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 sm:p-8 cursor-zoom-out"
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative max-w-3xl w-full bg-surface border border-stroke rounded-3xl overflow-hidden shadow-2xl cursor-default"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setActiveLightbox(null)}
-                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-bg/80 border border-stroke flex items-center justify-center text-text-primary hover:bg-white hover:text-black transition-colors"
-                aria-label="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="relative aspect-[4/3] w-full bg-black">
-                <img
-                  src={activeLightbox.image}
-                  alt={activeLightbox.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="p-6 md:p-8 flex items-center justify-between">
-                <div>
-                  <span className="text-xs uppercase font-mono tracking-wider text-muted block mb-1">
-                    {activeLightbox.category}
-                  </span>
-                  <h3 className="text-2xl font-display italic text-text-primary">
-                    {activeLightbox.title}
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setActiveLightbox(null)}
-                  className="text-xs uppercase tracking-widest text-muted hover:text-text-primary transition-colors font-medium"
-                >
-                  Close [ESC]
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 };
-

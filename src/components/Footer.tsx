@@ -3,6 +3,7 @@ import Hls from "hls.js";
 import gsap from "gsap";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { GithubIcon } from "./icons/GithubIcon";
+import { PinterestIcon } from "./icons/PinterestIcon";
 import { PERSONAL_INFO } from "../data/portfolioData";
 
 const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
@@ -145,6 +146,7 @@ export const Footer: React.FC = () => {
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
             >
+              <PinterestIcon className="w-4 h-4" />
               <span>Pinterest</span>
               <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
             </a>
