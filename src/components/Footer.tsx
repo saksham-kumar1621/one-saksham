@@ -1,0 +1,180 @@
+  import React, { useEffect, useRef } from "react";
+import Hls from "hls.js";
+import gsap from "gsap";
+import { ArrowUpRight, Mail } from "lucide-react";
+import { GithubIcon } from "./icons/GithubIcon";
+import { PERSONAL_INFO } from "../data/portfolioData";
+
+const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
+
+export const Footer: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const marqueeRef = useRef<HTMLDivElement | null>(null);
+
+  // Setup flipped background video with hls.js
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    let hls: Hls | null = null;
+
+    if (Hls.isSupported()) {
+      hls = new Hls({
+        autoStartLoad: true,
+        startLevel: -1,
+        capLevelToPlayerSize: true,
+      });
+      hls.loadSource(HLS_STREAM_URL);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {});
+      });
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = HLS_STREAM_URL;
+      video.addEventListener("loadedmetadata", () => {
+        video.play().catch(() => {});
+      });
+    }
+
+    return () => {
+      if (hls) {
+        hls.destroy();
+      }
+    };
+  }, []);
+
+  // GSAP Marquee: xPercent: -50, duration: 40, ease: "none", repeat: -1
+  useEffect(() => {
+    if (!marqueeRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.to(marqueeRef.current, {
+        xPercent: -50,
+        duration: 38,
+        ease: "none",
+        repeat: -1,
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  const marqueeText = Array(10).fill("BUILDING THINGS NOBODY ASKED FOR • ").join("");
+
+  return (
+    <footer
+      id="contact-footer"
+      className="relative bg-bg pt-16 md:pt-24 pb-8 md:pb-12 overflow-hidden border-t border-stroke/30"
+    >
+      {/* Background Video (Flipped Vertically) */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover scale-y-[-1] opacity-45"
+        />
+        {/* Heavier overlay */}
+        <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" />
+        {/* Top gradient fade into footer */}
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg to-transparent" />
+      </div>
+
+      {/* GSAP Marquee Banner */}
+      <div className="relative z-10 w-full overflow-hidden py-4 border-y border-stroke/40 backdrop-blur-sm bg-bg/40 mb-16 md:mb-20">
+        <div
+          ref={marqueeRef}
+          className="whitespace-nowrap flex font-mono text-xs sm:text-sm tracking-[0.25em] text-muted font-medium select-none uppercase"
+        >
+          <span className="inline-block">{marqueeText}</span>
+          <span className="inline-block">{marqueeText}</span>
+        </div>
+      </div>
+
+      {/* Main CTA Content */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 flex flex-col items-center text-center">
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3 mb-6">
+          <span className="w-8 h-px bg-stroke" />
+          <span className="text-xs text-muted uppercase tracking-[0.3em] font-medium">
+            Get In Touch
+          </span>
+          <span className="w-8 h-px bg-stroke" />
+        </div>
+
+        {/* Big Heading */}
+        <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display text-text-primary tracking-tight mb-8 max-w-3xl leading-[1.05]">
+          Have an idea or project? Let&apos;s build{" "}
+          <span className="italic font-normal">something unexpected</span>.
+        </h2>
+
+        {/* Email Button with gradient hover border ring */}
+        <a
+          href={`mailto:${PERSONAL_INFO.email}`}
+          className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 mb-16"
+        >
+          {/* Animated gradient ring */}
+          <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-shift" />
+          <div className="relative flex items-center gap-3 rounded-full px-8 sm:px-10 py-4 sm:py-5 bg-surface border border-stroke text-text-primary font-medium text-base sm:text-lg group-hover:border-transparent transition-all">
+            <Mail className="w-5 h-5 text-muted group-hover:text-text-primary transition-colors" />
+            <span>{PERSONAL_INFO.email}</span>
+            <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </div>
+        </a>
+
+        {/* Footer Bottom Bar */}
+        <div className="w-full pt-8 border-t border-stroke/50 flex flex-col sm:flex-row items-center justify-between gap-6">
+          {/* Social Links */}
+          <div className="flex items-center gap-6 sm:gap-8">
+            <a
+              href={PERSONAL_INFO.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+            >
+              <GithubIcon className="w-4 h-4" />
+              <span>GitHub</span>
+              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+            </a>
+
+            <a
+              href={PERSONAL_INFO.pinterest}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+            >
+              <span>Pinterest</span>
+              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+            </a>
+
+            <a
+              href={`mailto:${PERSONAL_INFO.email}`}
+              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+            >
+              <span>Email</span>
+              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+            </a>
+          </div>
+
+          {/* Green Pulsing Dot + Status */}
+          <div className="flex items-center gap-2.5 bg-surface/70 border border-stroke/60 rounded-full px-4 py-1.5 backdrop-blur-md">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="text-xs text-text-primary/90 font-medium tracking-wide">
+              {PERSONAL_INFO.status}
+            </span>
+          </div>
+
+          {/* Copyright / Location */}
+          <div className="text-xs text-muted font-mono">
+            &copy; {new Date().getFullYear()} {PERSONAL_INFO.alias} • {PERSONAL_INFO.location}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
