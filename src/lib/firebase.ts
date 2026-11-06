@@ -9,14 +9,28 @@ export interface FirebaseConfigObject {
   storageBucket?: string;
   messagingSenderId?: string;
   appId: string;
+  measurementId?: string;
 }
 
 const STORAGE_KEY = "onesaksham_firebase_config";
 
 /**
- * Returns active Firebase config from either localStorage or import.meta.env
+ * Saksham's Official Firebase Project Configuration
  */
-export function getActiveFirebaseConfig(): FirebaseConfigObject | null {
+export const DEFAULT_FIREBASE_CONFIG: FirebaseConfigObject = {
+  apiKey: "AIzaSyDt-oSreiUGcHnuIiHHVfk26jV4fr1SC0o",
+  authDomain: "onesaksham-c0259.firebaseapp.com",
+  projectId: "onesaksham-c0259",
+  storageBucket: "onesaksham-c0259.firebasestorage.app",
+  messagingSenderId: "287641057443",
+  appId: "1:287641057443:web:6dafff60834ae442b9a716",
+  measurementId: "G-ED498EH8MJ",
+};
+
+/**
+ * Returns active Firebase config from either localStorage, import.meta.env, or default config
+ */
+export function getActiveFirebaseConfig(): FirebaseConfigObject {
   // 1. Check user override in localStorage
   if (typeof window !== "undefined") {
     try {
@@ -41,13 +55,15 @@ export function getActiveFirebaseConfig(): FirebaseConfigObject | null {
       apiKey: envApiKey,
       authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || `${envProjectId}.firebaseapp.com`,
       projectId: envProjectId,
-      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || `${envProjectId}.appspot.com`,
+      storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || `${envProjectId}.firebasestorage.app`,
       messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "",
       appId: import.meta.env.VITE_FIREBASE_APP_ID || "",
+      measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || "",
     };
   }
 
-  return null;
+  // 3. Fallback to Saksham's official Firebase project
+  return DEFAULT_FIREBASE_CONFIG;
 }
 
 export function saveFirebaseConfig(config: FirebaseConfigObject): boolean {
@@ -73,9 +89,6 @@ let auth: Auth | null = null;
 
 export function initFirebase() {
   const config = getActiveFirebaseConfig();
-  if (!config) {
-    return { app: null, db: null, auth: null, isConfigured: false };
-  }
 
   try {
     const existingApps = getApps();

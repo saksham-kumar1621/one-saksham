@@ -107,66 +107,86 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
       // 1. Profile Doc
       const profileRef = doc(activeDb, "settings", "profile");
-      const unsubProfile = onSnapshot(profileRef, (snap) => {
-        if (snap.exists()) {
-          const data = snap.data() as PersonalInfo;
-          setPersonalInfo(data);
-          setCached("profile", data);
-          setActiveSource("firebase");
-        }
-      });
+      const unsubProfile = onSnapshot(
+        profileRef,
+        (snap) => {
+          if (snap.exists()) {
+            const data = snap.data() as PersonalInfo;
+            setPersonalInfo(data);
+            setCached("profile", data);
+            setActiveSource("firebase");
+          }
+        },
+        (err) => console.warn("Firestore profile snapshot notice:", err.message)
+      );
 
       // 2. Projects Collection
       const projectsCol = collection(activeDb, "projects");
-      const unsubProjects = onSnapshot(projectsCol, (snap) => {
-        if (!snap.empty) {
-          const list: ProjectItem[] = [];
-          snap.forEach((docSnap) => {
-            list.push({ id: docSnap.id, ...(docSnap.data() as Omit<ProjectItem, "id">) });
-          });
-          setProjects(list);
-          setCached("projects", list);
-          setActiveSource("firebase");
-        }
-      });
+      const unsubProjects = onSnapshot(
+        projectsCol,
+        (snap) => {
+          if (!snap.empty) {
+            const list: ProjectItem[] = [];
+            snap.forEach((docSnap) => {
+              list.push({ id: docSnap.id, ...(docSnap.data() as Omit<ProjectItem, "id">) });
+            });
+            setProjects(list);
+            setCached("projects", list);
+            setActiveSource("firebase");
+          }
+        },
+        (err) => console.warn("Firestore projects snapshot notice:", err.message)
+      );
 
       // 3. Explorations Collection
       const expCol = collection(activeDb, "explorations");
-      const unsubExp = onSnapshot(expCol, (snap) => {
-        if (!snap.empty) {
-          const list: ExplorationItem[] = [];
-          snap.forEach((docSnap) => {
-            list.push({ id: docSnap.id, ...(docSnap.data() as Omit<ExplorationItem, "id">) });
-          });
-          setExplorations(list);
-          setCached("explorations", list);
-          setActiveSource("firebase");
-        }
-      });
+      const unsubExp = onSnapshot(
+        expCol,
+        (snap) => {
+          if (!snap.empty) {
+            const list: ExplorationItem[] = [];
+            snap.forEach((docSnap) => {
+              list.push({ id: docSnap.id, ...(docSnap.data() as Omit<ExplorationItem, "id">) });
+            });
+            setExplorations(list);
+            setCached("explorations", list);
+            setActiveSource("firebase");
+          }
+        },
+        (err) => console.warn("Firestore explorations snapshot notice:", err.message)
+      );
 
       // 4. Messages Collection (For Admin inbox)
       const msgCol = collection(activeDb, "messages");
-      const unsubMsg = onSnapshot(msgCol, (snap) => {
-        const list: ContactMessage[] = [];
-        snap.forEach((docSnap) => {
-          list.push({ id: docSnap.id, ...(docSnap.data() as Omit<ContactMessage, "id">) });
-        });
-        list.sort((a, b) => b.createdAt - a.createdAt);
-        setMessages(list);
-        setCached("messages", list);
-      });
+      const unsubMsg = onSnapshot(
+        msgCol,
+        (snap) => {
+          const list: ContactMessage[] = [];
+          snap.forEach((docSnap) => {
+            list.push({ id: docSnap.id, ...(docSnap.data() as Omit<ContactMessage, "id">) });
+          });
+          list.sort((a, b) => b.createdAt - a.createdAt);
+          setMessages(list);
+          setCached("messages", list);
+        },
+        (err) => console.warn("Firestore messages snapshot notice:", err.message)
+      );
 
       // 5. Tech Stack
       const stackRef = doc(activeDb, "settings", "tech_stack");
-      const unsubStack = onSnapshot(stackRef, (snap) => {
-        if (snap.exists()) {
-          const data = snap.data();
-          if (data && Array.isArray(data.categories)) {
-            setTechStack(data.categories);
-            setCached("tech_stack", data.categories);
+      const unsubStack = onSnapshot(
+        stackRef,
+        (snap) => {
+          if (snap.exists()) {
+            const data = snap.data();
+            if (data && Array.isArray(data.categories)) {
+              setTechStack(data.categories);
+              setCached("tech_stack", data.categories);
+            }
           }
-        }
-      });
+        },
+        (err) => console.warn("Firestore tech stack snapshot notice:", err.message)
+      );
 
       setIsLoading(false);
 
