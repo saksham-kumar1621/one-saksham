@@ -1,14 +1,16 @@
-  import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import Hls from "hls.js";
 import gsap from "gsap";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, Mail, Lock } from "lucide-react";
 import { GithubIcon } from "./icons/GithubIcon";
 import { PinterestIcon } from "./icons/PinterestIcon";
-import { PERSONAL_INFO } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 
 const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
 
 export const Footer: React.FC = () => {
+  const { personalInfo } = usePortfolio();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
 
@@ -113,14 +115,14 @@ export const Footer: React.FC = () => {
 
         {/* Email Button with gradient hover border ring */}
         <a
-          href={`mailto:${PERSONAL_INFO.email}`}
+          href={`mailto:${personalInfo.email}`}
           className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 mb-16"
         >
           {/* Animated gradient ring */}
           <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-shift" />
           <div className="relative flex items-center gap-3 rounded-full px-8 sm:px-10 py-4 sm:py-5 bg-surface border border-stroke text-text-primary font-medium text-base sm:text-lg group-hover:border-transparent transition-all">
             <Mail className="w-5 h-5 text-muted group-hover:text-text-primary transition-colors" />
-            <span>{PERSONAL_INFO.email}</span>
+            <span>{personalInfo.email}</span>
             <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
           </div>
         </a>
@@ -130,7 +132,7 @@ export const Footer: React.FC = () => {
           {/* Social Links */}
           <div className="flex items-center gap-6 sm:gap-8">
             <a
-              href={PERSONAL_INFO.github}
+              href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
@@ -141,7 +143,7 @@ export const Footer: React.FC = () => {
             </a>
 
             <a
-              href={PERSONAL_INFO.pinterest}
+              href={personalInfo.pinterest}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
@@ -152,7 +154,7 @@ export const Footer: React.FC = () => {
             </a>
 
             <a
-              href={`mailto:${PERSONAL_INFO.email}`}
+              href={`mailto:${personalInfo.email}`}
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
             >
               <span>Email</span>
@@ -167,13 +169,24 @@ export const Footer: React.FC = () => {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="text-xs text-text-primary/90 font-medium tracking-wide">
-              {PERSONAL_INFO.status}
+              {personalInfo.status}
             </span>
           </div>
 
-          {/* Copyright / Location */}
-          <div className="text-xs text-muted font-mono">
-            &copy; {new Date().getFullYear()} {PERSONAL_INFO.alias} • {PERSONAL_INFO.location}
+          {/* Copyright / Location & Admin Link */}
+          <div className="flex items-center gap-4 text-xs text-muted font-mono">
+            <span>
+              &copy; {new Date().getFullYear()} {personalInfo.alias} • {personalInfo.location}
+            </span>
+            <span className="text-stroke">•</span>
+            <Link
+              to="/admin"
+              className="text-muted/60 hover:text-text-primary transition-colors flex items-center gap-1"
+              title="Admin Dashboard"
+            >
+              <Lock className="w-3 h-3" />
+              <span>CMS</span>
+            </Link>
           </div>
         </div>
       </div>

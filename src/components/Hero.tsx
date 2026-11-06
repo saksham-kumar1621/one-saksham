@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import Hls from "hls.js";
 import gsap from "gsap";
 import { ArrowRight, MapPin, Sparkles } from "lucide-react";
-import { PERSONAL_INFO } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 
 const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
 
 export const Hero: React.FC = () => {
+  const { personalInfo } = usePortfolio();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [roleIndex, setRoleIndex] = useState<number>(0);
@@ -46,12 +47,13 @@ export const Hero: React.FC = () => {
 
   // Roles cycle every 2 seconds
   useEffect(() => {
+    const roles = personalInfo.rolesCycle || ["Full Stack Developer", "UI/UX Designer"];
     const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % PERSONAL_INFO.rolesCycle.length);
+      setRoleIndex((prev) => (prev + 1) % roles.length);
     }, 2200);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [personalInfo.rolesCycle]);
 
   // GSAP Entrance animation
   useEffect(() => {
@@ -102,7 +104,7 @@ export const Hero: React.FC = () => {
         {/* Location & Status Badge */}
         <div className="blur-in inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/80 border border-stroke text-muted text-xs font-mono mb-8 backdrop-blur-md">
           <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-          <span>{PERSONAL_INFO.location}</span>
+          <span>{personalInfo.location}</span>
           <span className="text-stroke">•</span>
           <span className="text-text-primary flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-amber-300" />
@@ -112,7 +114,7 @@ export const Hero: React.FC = () => {
 
         {/* Name */}
         <h1 className="name-reveal text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display italic leading-[0.9] tracking-tight text-text-primary mb-6">
-          {PERSONAL_INFO.name}
+          {personalInfo.name}
         </h1>
 
         {/* Dynamic Role Line */}
@@ -123,7 +125,7 @@ export const Hero: React.FC = () => {
               key={roleIndex}
               className="font-display italic text-text-primary text-xl sm:text-2xl md:text-3xl animate-role-fade-in inline-block"
             >
-              {PERSONAL_INFO.rolesCycle[roleIndex]}
+              {(personalInfo.rolesCycle || ["Full Stack Developer"])[roleIndex] || personalInfo.role}
             </span>
           </span>
           <span>crafting digital craft.</span>
@@ -131,11 +133,11 @@ export const Hero: React.FC = () => {
 
         {/* Tagline / Bio */}
         <p className="blur-in text-base sm:text-lg md:text-xl text-text-primary/90 font-display italic max-w-xl leading-relaxed mb-4">
-          &ldquo;{PERSONAL_INFO.tagline}&rdquo;
+          &ldquo;{personalInfo.tagline}&rdquo;
         </p>
 
         <p className="blur-in text-xs sm:text-sm text-muted max-w-md leading-relaxed mb-12">
-          {PERSONAL_INFO.bio}
+          {personalInfo.bio}
         </p>
 
         {/* CTA Buttons */}

@@ -21,7 +21,42 @@ export interface SkillCategory {
   skills: string[];
 }
 
-export const PERSONAL_INFO = {
+export interface PersonalInfo {
+  name: string;
+  fullName: string;
+  alias: string;
+  role: string;
+  location: string;
+  tagline: string;
+  bio: string;
+  email: string;
+  github: string;
+  pinterest: string;
+  avatar: string;
+  status: string;
+  rolesCycle: string[];
+}
+
+export interface ExplorationItem {
+  id: string;
+  title: string;
+  category: string;
+  image: string;
+  pinUrl: string;
+  rotation: number;
+}
+
+export interface ContactMessage {
+  id: string;
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  createdAt: number;
+  read?: boolean;
+}
+
+export const PERSONAL_INFO: PersonalInfo = {
   name: "One Saksham",
   fullName: "One Saksham",
   alias: "One Saksham",
@@ -161,4 +196,56 @@ export const PROJECTS: ProjectItem[] = [
       "https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=1200&q=85",
   },
 ];
+
+export const DEFAULT_EXPLORATIONS: ExplorationItem[] = [
+  {
+    id: "pin-1",
+    title: "Dark Aesthetic Lord Krishna",
+    category: "Divine Cosmic Art",
+    image: "https://i.pinimg.com/736x/c2/09/c4/c209c425e1996d696b86f3f054c31099.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777378728765/",
+    rotation: -3,
+  },
+  {
+    id: "pin-2",
+    title: "Dark Angel Lord // Red Blade",
+    category: "Dark Fantasy Concept",
+    image: "https://i.pinimg.com/736x/cd/fd/a1/cdfda17f420c99d767da4a848b55aebc.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777375448823/",
+    rotation: 2.5,
+  },
+  {
+    id: "pin-3",
+    title: "Tyler Durden 4K Desktop",
+    category: "Cinematic Edit",
+    image: "https://i.pinimg.com/736x/b9/e9/7e/b9e97ea2865ada5b21f12895cd008e79.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777377435682/",
+    rotation: -2,
+  },
+  {
+    id: "pin-4",
+    title: "Black & Gold Metallic Rose",
+    category: "Gothic Luxury",
+    image: "https://i.pinimg.com/736x/f2/f3/31/f2f33173064ec04c3903ddff5fe25a1e.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777378728565/",
+    rotation: 3,
+  },
+  {
+    id: "pin-5",
+    title: "Fallen Wings // 111 Graphic",
+    category: "Dark Academia",
+    image: "https://i.pinimg.com/736x/19/ff/8a/19ff8a1f2b8b516fbc83957ebc7e1e05.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777375802692/",
+    rotation: -2.5,
+  },
+  {
+    id: "pin-6",
+    title: "Bruce Wayne // Discipline 4K",
+    category: "Monochrome Cinema",
+    image: "https://i.pinimg.com/736x/3a/9a/cb/3a9acbe809c675a0f615d08f2dee5090.jpg",
+    pinUrl: "https://www.pinterest.com/pin/1105633777374123112/",
+    rotation: 2,
+  },
+];
+
 

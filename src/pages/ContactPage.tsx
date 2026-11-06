@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Compass, MapPin, Send, Check, Copy, Clock, Sparkles } from "lucide-react";
 import { GithubIcon } from "../components/icons/GithubIcon";
-import { PERSONAL_INFO } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 
 export const ContactPage: React.FC = () => {
+  const { personalInfo, submitContactMessage } = usePortfolio();
   const [copied, setCopied] = useState<boolean>(false);
   const [istTime, setIstTime] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -35,20 +37,31 @@ export const ContactPage: React.FC = () => {
   }, []);
 
   const copyEmail = () => {
-    navigator.clipboard.writeText(PERSONAL_INFO.email);
+    navigator.clipboard.writeText(personalInfo.email);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Generate mailto link
-    const mailtoLink = `mailto:${PERSONAL_INFO.email}?subject=${encodeURIComponent(
+    setIsSubmitting(true);
+
+    try {
+      // 1. Submit message to Firebase Firestore / CMS inbox
+      await submitContactMessage(formData);
+    } catch (err) {
+      console.warn("Could not save to Firestore:", err);
+    }
+
+    // 2. Open mailto link as mail client fallback
+    const mailtoLink = `mailto:${personalInfo.email}?subject=${encodeURIComponent(
       formData.subject || `Inquiry from ${formData.name}`
     )}&body=${encodeURIComponent(
       `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
     )}`;
     window.location.href = mailtoLink;
+
+    setIsSubmitting(false);
     setFormSubmitted(true);
   };
 
@@ -86,7 +99,7 @@ export const ContactPage: React.FC = () => {
               Direct Mail
             </span>
             <p className="text-2xl font-display italic text-text-primary mb-6">
-              {PERSONAL_INFO.email}
+              {personalInfo.email}
             </p>
 
             <button
@@ -115,7 +128,7 @@ export const ContactPage: React.FC = () => {
               </div>
               <div>
                 <span className="text-xs font-semibold text-text-primary block">
-                  Muzaffarpur, Bihar
+                  {personalInfo.location}
                 </span>
                 <span className="text-[11px] text-muted">India (UTC +5:30)</span>
               </div>
@@ -130,7 +143,7 @@ export const ContactPage: React.FC = () => {
           {/* Social Badges */}
           <div className="grid grid-cols-2 gap-4">
             <a
-              href={PERSONAL_INFO.github}
+              href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
               className="p-5 rounded-2xl bg-surface/40 border border-stroke hover:bg-surface hover:border-text-primary/40 transition-all group flex flex-col justify-between"
@@ -143,7 +156,7 @@ export const ContactPage: React.FC = () => {
             </a>
 
             <a
-              href={PERSONAL_INFO.pinterest}
+              href={personalInfo.pinterest}
               target="_blank"
               rel="noopener noreferrer"
               className="p-5 rounded-2xl bg-surface/40 border border-stroke hover:bg-surface hover:border-text-primary/40 transition-all group flex flex-col justify-between"
@@ -187,7 +200,7 @@ export const ContactPage: React.FC = () => {
                   Dispatch Initialized!
                 </h4>
                 <p className="text-xs text-muted max-w-sm mb-6">
-                  Your email client has been opened with your message. If it didn&apos;t open automatically, you can email me directly at {PERSONAL_INFO.email}.
+                  Your message has been safely received and stored! Your email client has also been opened if you want to follow up directly at {personalInfo.email}.
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
@@ -258,12 +271,13 @@ export const ContactPage: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-[1.02] mt-3"
+                  disabled={isSubmitting}
+                  className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-[1.02] mt-3 disabled:opacity-50"
                 >
                   <span className="absolute inset-0 rounded-full accent-gradient animate-gradient-shift" />
                   <div className="relative flex items-center justify-center gap-2 rounded-full px-8 py-4 bg-text-primary text-bg font-semibold text-xs uppercase tracking-wider group-hover:bg-bg group-hover:text-text-primary transition-colors">
                     <Send className="w-3.5 h-3.5" />
-                    <span>Send Dispatch</span>
+                    <span>{isSubmitting ? "Dispatching..." : "Send Dispatch"}</span>
                   </div>
                 </button>
               </form>

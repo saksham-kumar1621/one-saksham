@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, ArrowUpRight, Star, Terminal, Code2 } from "lucide-react";
 import { GithubIcon } from "../components/icons/GithubIcon";
-import { PROJECTS } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 import type { ProjectItem } from "../data/portfolioData";
 
 export const ProjectsPage: React.FC = () => {
+  const { projects } = usePortfolio();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const categories = ["All", "Tools & Desktop", "Full Stack", "Games & Realtime"];
 
-  const filteredProjects = PROJECTS.filter((project: ProjectItem) => {
+  const filteredProjects = projects.filter((project: ProjectItem) => {
     const matchesCategory =
       selectedCategory === "All" || project.category === selectedCategory;
     const matchesSearch =

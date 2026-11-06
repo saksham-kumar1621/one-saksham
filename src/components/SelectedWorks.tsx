@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { GithubIcon } from "./icons/GithubIcon";
-import { PROJECTS } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 
 export const SelectedWorks: React.FC = () => {
-  // Show first 4 featured projects in bento layout
-  const featuredProjects = PROJECTS.slice(0, 4);
+  const { projects } = usePortfolio();
+  // Show featured projects or first 4 projects in bento layout
+  const featuredOnly = projects.filter((p) => p.featured);
+  const featuredProjects = featuredOnly.length >= 2 ? featuredOnly.slice(0, 4) : projects.slice(0, 4);
   const colSpans = ["md:col-span-7", "md:col-span-5", "md:col-span-5", "md:col-span-7"];
 
   return (

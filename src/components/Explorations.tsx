@@ -2,72 +2,13 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
-import { PERSONAL_INFO } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 import { PinterestIcon } from "./icons/PinterestIcon";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface ExplorationItem {
-  id: string;
-  title: string;
-  category: string;
-  image: string;
-  pinUrl: string;
-  rotation: number;
-}
-
-const explorationItems: ExplorationItem[] = [
-  {
-    id: "pin-1",
-    title: "Dark Aesthetic Lord Krishna",
-    category: "Divine Cosmic Art",
-    image: "https://i.pinimg.com/736x/c2/09/c4/c209c425e1996d696b86f3f054c31099.jpg",
-    pinUrl: "https://www.pinterest.com/pin/1105633777378728765/",
-    rotation: -3,
-  },
-  {
-    id: "pin-2",
-    title: "Dark Angel Lord // Red Blade",
-    category: "Dark Fantasy Concept",
-    image: "https://i.pinimg.com/736x/cd/fd/a1/cdfda17f420c99d767da4a848b55aebc.jpg",
-    pinUrl: "https://www.pinterest.com/pin/1105633777375448823/",
-    rotation: 2.5,
-  },
-  {
-    id: "pin-3",
-    title: "Tyler Durden 4K Desktop",
-    category: "Cinematic Edit",
-    image: "https://i.pinimg.com/736x/b9/e9/7e/b9e97ea2865ada5b21f12895cd008e79.jpg",
-    pinUrl: "https://www.pinterest.com/pin/1105633777377435682/",
-    rotation: -2,
-  },
-  {
-    id: "pin-4",
-    title: "Black & Gold Metallic Rose",
-    category: "Gothic Luxury",
-    image: "https://i.pinimg.com/736x/f2/f3/31/f2f33173064ec04c3903ddff5fe25a1e.jpg",
-    pinUrl: "https://www.pinterest.com/pin/1105633777378728565/",
-    rotation: 3,
-  },
-  {
-    id: "pin-5",
-    title: "Fallen Wings // 111 Graphic",
-    category: "Dark Academia",
-    image: "https://i.pinimg.com/736x/19/ff/8a/19ff8a1f2b8b516fbc83957ebc7e1e05.jpg",
-    pinUrl: "https://www.pinterest.com/pin/1105633777375802692/",
-    rotation: -2.5,
-  },
-  {
-    id: "pin-6",
-    title: "Bruce Wayne // Discipline 4K",
-    category: "Monochrome Cinema",
-    image: "https://i.pinimg.com/736x/3a/9a/cb/3a9acbe809c675a0f615d08f2dee5090.jpg",
-    pinUrl: "https://www.pinterest.com/pin/1105633777374123112/",
-    rotation: 2,
-  },
-];
-
 export const Explorations: React.FC = () => {
+  const { explorations, personalInfo } = usePortfolio();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const pinnedCenterRef = useRef<HTMLDivElement | null>(null);
   const col1Ref = useRef<HTMLDivElement | null>(null);
@@ -125,8 +66,9 @@ export const Explorations: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
-  const col1Items = explorationItems.slice(0, 3);
-  const col2Items = explorationItems.slice(3, 6);
+  const mid = Math.ceil(explorations.length / 2);
+  const col1Items = explorations.slice(0, mid);
+  const col2Items = explorations.slice(mid);
 
   return (
     <section
@@ -164,7 +106,7 @@ export const Explorations: React.FC = () => {
 
           {/* Pinterest CTA Button */}
           <a
-            href={PERSONAL_INFO.pinterest}
+            href={personalInfo.pinterest}
             target="_blank"
             rel="noopener noreferrer"
             className="group inline-flex items-center gap-2.5 rounded-full px-6 py-3 bg-surface/90 hover:bg-surface border border-stroke hover:border-red-500/40 text-text-primary text-xs font-medium backdrop-blur-md transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-red-500/10"

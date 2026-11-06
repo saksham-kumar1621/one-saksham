@@ -79,8 +79,23 @@
 
 ---
 
+## ⚡ Firebase Dynamic Backend & CMS Milestone
+- Installed `@firebase` modular SDK.
+- Configured [`src/lib/firebase.ts`](file:///c:/Users/Asus/OneDrive/Desktop/Projects/protfolio_me/src/lib/firebase.ts) with dual-source credential resolver (`.env` + in-browser localStorage override).
+- Built unified reactive state in [`src/context/PortfolioContext.tsx`](file:///c:/Users/Asus/OneDrive/Desktop/Projects/protfolio_me/src/context/PortfolioContext.tsx) with offline cache fallback.
+- Created luxury dark CMS at `/admin` ([`src/pages/AdminPage.tsx`](file:///c:/Users/Asus/OneDrive/Desktop/Projects/protfolio_me/src/pages/AdminPage.tsx)) for full CRUD over:
+  - Personal Info, Tagline & Rotating Roles
+  - Projects (Add, Edit, Delete, Toggle Featured, Star counts)
+  - Visual Playground Artwork (Pinterest Pins management)
+  - Tech Stack Categories & Skills
+  - Realtime Visitor Inquiries Inbox
+  - 1-Click "Seed Firestore with Portfolio Data" utility
+
+---
+
 ## ⏭️ Next Actions
-- [ ] Connect GitHub account in Vercel settings and trigger final production build.
+- [x] Connect GitHub account in Vercel settings and trigger final production build.
+- [ ] Add Firebase Project credentials in Admin Settings tab or Vercel Environment Variables.
 - [ ] Add custom domain (`onesaksham.dev` or `onesaksham.me`).
 - [ ] Configure OpenGraph / Twitter Card preview images for rich social media links.
 

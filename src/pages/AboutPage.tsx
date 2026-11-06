@@ -2,9 +2,10 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MapPin, Mail, Compass, Sparkles, Terminal, Code, Cpu } from "lucide-react";
 import { GithubIcon } from "../components/icons/GithubIcon";
-import { PERSONAL_INFO } from "../data/portfolioData";
+import { usePortfolio } from "../context/PortfolioContext";
 
 export const AboutPage: React.FC = () => {
+  const { personalInfo } = usePortfolio();
   return (
     <div className="pt-32 pb-24 px-6 md:px-12 lg:px-20 max-w-[1200px] mx-auto min-h-screen">
       {/* Header */}
@@ -44,7 +45,7 @@ export const AboutPage: React.FC = () => {
           </div>
 
           <p>
-            Hey! I&apos;m <span className="text-text-primary font-medium">{PERSONAL_INFO.name}</span> (known online as <span className="text-text-primary font-medium">{PERSONAL_INFO.alias}</span>). I&apos;m a Full Stack Developer and Designer hailing from <span className="text-text-primary font-medium">{PERSONAL_INFO.location}</span>.
+            Hey! I&apos;m <span className="text-text-primary font-medium">{personalInfo.name}</span> (known online as <span className="text-text-primary font-medium">{personalInfo.alias}</span>). I&apos;m a Full Stack Developer and Designer hailing from <span className="text-text-primary font-medium">{personalInfo.location}</span>.
           </p>
 
           <p>
@@ -82,17 +83,17 @@ export const AboutPage: React.FC = () => {
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-2xl overflow-hidden border border-stroke bg-bg shrink-0">
                 <img
-                  src={PERSONAL_INFO.avatar}
-                  alt={PERSONAL_INFO.fullName}
+                  src={personalInfo.avatar}
+                  alt={personalInfo.fullName}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div>
                 <h3 className="text-2xl font-display italic text-text-primary">
-                  {PERSONAL_INFO.fullName}
+                  {personalInfo.fullName}
                 </h3>
                 <p className="text-xs font-mono text-cyan-400 uppercase tracking-wider">
-                  @{PERSONAL_INFO.alias}
+                  @{personalInfo.alias}
                 </p>
               </div>
             </div>
@@ -103,7 +104,7 @@ export const AboutPage: React.FC = () => {
 
             <div className="flex flex-col gap-2.5">
               <a
-                href={PERSONAL_INFO.github}
+                href={personalInfo.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 transition-colors"
@@ -116,7 +117,7 @@ export const AboutPage: React.FC = () => {
               </a>
 
               <a
-                href={PERSONAL_INFO.pinterest}
+                href={personalInfo.pinterest}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 transition-colors"
@@ -129,7 +130,7 @@ export const AboutPage: React.FC = () => {
               </a>
 
               <a
-                href={`mailto:${PERSONAL_INFO.email}`}
+                href={`mailto:${personalInfo.email}`}
                 className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 transition-colors"
               >
                 <span className="flex items-center gap-2">
@@ -137,7 +138,7 @@ export const AboutPage: React.FC = () => {
                   <span>Direct Email</span>
                 </span>
                 <span className="text-muted font-mono text-[11px] truncate max-w-[150px]">
-                  {PERSONAL_INFO.email}
+                  {personalInfo.email}
                 </span>
               </a>
             </div>
