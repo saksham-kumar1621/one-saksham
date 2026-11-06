@@ -112,18 +112,16 @@ export const SelectedWorks: React.FC = () => {
                 </div>
               </div>
 
-              {/* Hover Floating Pill: View — *Title* */}
+              {/* Hover Floating Pill: Sleek, compact & uniform CTA */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-300 transform scale-95 group-hover:scale-100">
                 <div className="relative p-[1.5px] rounded-full">
                   <span className="absolute inset-0 rounded-full accent-gradient animate-gradient-shift" />
-                  <div className="relative bg-white text-black px-6 py-3 rounded-full flex items-center gap-2 shadow-2xl">
-                    <span className="text-xs uppercase tracking-wider font-semibold text-black/70">
-                      View on GitHub —
+                  <div className="relative bg-white text-black px-5 py-2.5 rounded-full flex items-center gap-2.5 shadow-2xl">
+                    <GithubIcon className="w-4 h-4 text-black" />
+                    <span className="text-xs uppercase tracking-wider font-semibold text-black">
+                      View on GitHub
                     </span>
-                    <span className="font-display italic text-lg text-black font-medium">
-                      {project.title}
-                    </span>
-                    <ArrowUpRight className="w-4 h-4 text-black ml-1" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-black" />
                   </div>
                 </div>
               </div>
