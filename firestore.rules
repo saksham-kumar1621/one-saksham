@@ -1,0 +1,72 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =========================================================================
+    // SECURITY HELPER FUNCTIONS
+    // =========================================================================
+    
+    // Check if user is authenticated with Saksham's authorized admin email
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email != null &&
+             request.auth.token.email.lower() == 'sakshamkumar1621@gmail.com';
+    }
+
+    // Validate contact form payload against spam/tampering
+    function isValidMessage() {
+      let data = request.resource.data;
+      return data.name is string &&
+             data.name.size() >= 1 &&
+             data.name.size() <= 100 &&
+             data.email is string &&
+             data.email.size() >= 3 &&
+             data.email.size() <= 150 &&
+             data.message is string &&
+             data.message.size() >= 1 &&
+             data.message.size() <= 5000 &&
+             data.createdAt is number;
+    }
+
+    // =========================================================================
+    // COLLECTION RULES
+    // =========================================================================
+
+    // 1. Settings (Profile, Roles, Brand Copy, Tech Stack)
+    // Public can read; ONLY Admin can write
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 2. Projects Collection
+    // Public can read; ONLY Admin can add, update, or delete projects
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 3. Explorations (Pinterest Art Pins)
+    // Public can read; ONLY Admin can add, update, or delete pins
+    match /explorations/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // 4. Contact Form Inquiries (Messages)
+    // Public can ONLY create messages with strict validation
+    // Public CANNOT read, list, update, or delete other people's messages
+    // ONLY Admin can read, list, update, or delete messages
+    match /messages/{docId} {
+      allow create: if isValidMessage();
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

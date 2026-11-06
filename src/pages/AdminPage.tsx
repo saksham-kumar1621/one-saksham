@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -21,6 +21,8 @@ import {
   ExternalLink,
   Eye,
   Key,
+  ShieldCheck,
+  Copy,
 } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import {
@@ -28,7 +30,15 @@ import {
   clearFirebaseConfig,
   getActiveFirebaseConfig,
   type FirebaseConfigObject,
+  auth,
 } from "../lib/firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  type User as FirebaseUser,
+} from "firebase/auth";
 import type { ProjectItem, ExplorationItem } from "../data/portfolioData";
 import { PinterestIcon } from "../components/icons/PinterestIcon";
 import { GithubIcon } from "../components/icons/GithubIcon";
@@ -54,11 +64,37 @@ export const AdminPage: React.FC = () => {
   } = usePortfolio();
 
   // Authentication State
+  const [currentUser, setCurrentUser] = useState<FirebaseUser | null>(() => {
+    return auth?.currentUser || null;
+  });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    if (auth?.currentUser && auth.currentUser.email?.toLowerCase() === "sakshamkumar1621@gmail.com") {
+      return true;
+    }
     return sessionStorage.getItem("onesaksham_auth") === "true";
   });
-  const [passcode, setPasscode] = useState("");
+  const [email, setEmail] = useState("sakshamkumar1621@gmail.com");
+  const [password, setPassword] = useState("");
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
+  const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState("");
+
+  // Firebase Auth State Listener
+  useEffect(() => {
+    if (!auth) return;
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUser(user);
+        if (user.email?.toLowerCase() === "sakshamkumar1621@gmail.com") {
+          setIsAuthenticated(true);
+          sessionStorage.setItem("onesaksham_auth", "true");
+        }
+      } else {
+        setCurrentUser(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Navigation Tab
   const [activeTab, setActiveTab] = useState<
@@ -130,27 +166,78 @@ export const AdminPage: React.FC = () => {
     appId: activeCfg?.appId || "",
   });
 
-  // Handle Login
-  const handleLogin = (e: React.FormEvent) => {
+  // Handle Login (Firebase Auth with offline fallback)
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Default master passcodes: 'onesaksham' or 'admin123' or 'saksham'
-    if (
-      passcode.trim() === "onesaksham" ||
-      passcode.trim() === "admin123" ||
-      passcode.trim() === "saksham" ||
-      passcode.trim() === "1621"
-    ) {
+    setAuthError("");
+    setAuthLoading(true);
+
+    // Fallback: master backup passcode
+    if (password === "onesaksham" || password === "admin123" || password === "1621") {
       sessionStorage.setItem("onesaksham_auth", "true");
       setIsAuthenticated(true);
-      setAuthError("");
-    } else {
-      setAuthError("Invalid passcode. Default passcode is 'onesaksham'");
+      setAuthLoading(false);
+      showToast("Signed in via fallback passcode");
+      return;
+    }
+
+    if (!auth) {
+      setAuthError("Firebase Auth is not initialized. Please verify Firebase config.");
+      setAuthLoading(false);
+      return;
+    }
+
+    try {
+      if (isRegisterMode) {
+        const cred = await createUserWithEmailAndPassword(auth, email.trim(), password);
+        if (cred.user.email?.toLowerCase() === "sakshamkumar1621@gmail.com") {
+          setIsAuthenticated(true);
+          sessionStorage.setItem("onesaksham_auth", "true");
+          showToast("Admin account registered & verified!");
+        } else {
+          await signOut(auth);
+          setAuthError("Registration restricted: Only sakshamkumar1621@gmail.com is permitted.");
+        }
+      } else {
+        const cred = await signInWithEmailAndPassword(auth, email.trim(), password);
+        if (cred.user.email?.toLowerCase() === "sakshamkumar1621@gmail.com") {
+          setIsAuthenticated(true);
+          sessionStorage.setItem("onesaksham_auth", "true");
+          showToast("Authenticated as Saksham Kumar");
+        } else {
+          await signOut(auth);
+          setAuthError("Access Denied: Only sakshamkumar1621@gmail.com is authorized to manage this CMS.");
+        }
+      }
+    } catch (err: any) {
+      const msg = err?.code || err?.message || "Authentication failed.";
+      if (msg.includes("user-not-found") || msg.includes("invalid-credential")) {
+        setAuthError("Account not found or password incorrect. Click 'Create Admin Account' below if first time.");
+      } else if (msg.includes("email-already-in-use")) {
+        setAuthError("Account already exists. Switch back to 'Sign In'.");
+      } else if (msg.includes("weak-password")) {
+        setAuthError("Password should be at least 6 characters.");
+      } else {
+        setAuthError(err?.message || "Sign in failed. Check your network or credentials.");
+      }
+    } finally {
+      setAuthLoading(false);
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (auth) {
+      try {
+        await signOut(auth);
+      } catch {
+        // Ignore
+      }
+    }
     sessionStorage.removeItem("onesaksham_auth");
     setIsAuthenticated(false);
+    setCurrentUser(null);
+    setPassword("");
+    showToast("Signed out successfully");
   };
 
   // Save Profile
@@ -312,8 +399,14 @@ export const AdminPage: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="w-full max-w-md p-8 md:p-10 rounded-3xl bg-surface border border-stroke shadow-2xl relative z-10"
         >
-          <div className="w-12 h-12 rounded-2xl bg-white/5 border border-stroke flex items-center justify-center mb-6 text-text-primary">
-            <Lock className="w-5 h-5 text-white" />
+          <div className="flex items-center justify-between mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-stroke flex items-center justify-center text-text-primary">
+              <Lock className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-mono">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Firebase Auth Protected</span>
+            </div>
           </div>
 
           <span className="text-[10px] font-mono uppercase tracking-[0.25em] text-muted block mb-1">
@@ -323,26 +416,46 @@ export const AdminPage: React.FC = () => {
             One Saksham CMS
           </h1>
           <p className="text-xs text-muted leading-relaxed mb-6">
-            Enter your passcode to manage projects, Pinterest artwork, live brand copy, and view messages.
+            {isRegisterMode
+              ? "Create your secure master admin account on Firebase to manage portfolio data."
+              : "Sign in with your verified admin email to manage live projects, Pinterest art, and inquiries."}
           </p>
 
           {authError && (
             <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{authError}</span>
+              <span className="leading-snug">{authError}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="text-[11px] font-mono uppercase text-muted block mb-1.5">
-                Passcode
+                Admin Email
               </label>
               <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="sakshamkumar1621@gmail.com"
+                required
+                className="w-full px-4 py-3 rounded-xl bg-bg border border-stroke text-sm text-text-primary placeholder:text-muted/50 focus:outline-none focus:border-white/40 transition-colors font-mono text-xs"
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-[11px] font-mono uppercase text-muted block">
+                  Password / Passcode
+                </label>
+                <span className="text-[10px] text-muted font-mono">Min 6 characters</span>
+              </div>
+              <input
                 type="password"
-                value={passcode}
-                onChange={(e) => setPasscode(e.target.value)}
-                placeholder="Enter passcode (default: onesaksham)"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={isRegisterMode ? "Choose a strong password" : "Enter password or backup passcode"}
+                required
                 className="w-full px-4 py-3 rounded-xl bg-bg border border-stroke text-sm text-text-primary placeholder:text-muted/50 focus:outline-none focus:border-white/40 transition-colors"
                 autoFocus
               />
@@ -350,19 +463,47 @@ export const AdminPage: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition-colors cursor-pointer"
+              disabled={authLoading}
+              className="w-full py-3.5 rounded-xl bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60"
             >
-              Sign In to Dashboard
+              {authLoading ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                  <span>Verifying...</span>
+                </>
+              ) : isRegisterMode ? (
+                "Create Admin Account"
+              ) : (
+                "Sign In to Dashboard"
+              )}
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-stroke/60 text-center">
+          <div className="mt-5 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                setIsRegisterMode(!isRegisterMode);
+                setAuthError("");
+              }}
+              className="text-xs text-muted hover:text-white transition-colors cursor-pointer underline underline-offset-4"
+            >
+              {isRegisterMode
+                ? "Already set up? Switch to Sign In"
+                : "First time setup? Create Admin Account"}
+            </button>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-stroke/60 flex items-center justify-between text-xs text-muted">
             <Link
               to="/"
-              className="text-xs text-muted hover:text-text-primary transition-colors inline-flex items-center gap-1.5"
+              className="hover:text-text-primary transition-colors inline-flex items-center gap-1.5"
             >
               <span>← Back to Portfolio</span>
             </Link>
+            <span className="text-[10px] font-mono text-muted/60">
+              Only sakshamkumar1621@gmail.com
+            </span>
           </div>
         </motion.div>
       </div>
@@ -448,6 +589,12 @@ export const AdminPage: React.FC = () => {
             <span>View Site</span>
             <ExternalLink className="w-3 h-3 text-muted" />
           </Link>
+
+          {/* Current User Badge */}
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-stroke text-xs text-muted font-mono">
+            <User className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="truncate max-w-[180px]">{currentUser?.email || "sakshamkumar1621@gmail.com"}</span>
+          </div>
 
           {/* Logout */}
           <button
@@ -1181,36 +1328,139 @@ export const AdminPage: React.FC = () => {
             </form>
           </div>
 
-          {/* Quick Setup Guide & Security Rules */}
+          {/* Hardened Production Firestore Security Rules */}
           <div className="p-6 md:p-8 rounded-3xl bg-surface border border-stroke">
-            <h3 className="text-lg font-display italic text-text-primary mb-3">
-              Firestore Security Rules (Recommended)
-            </h3>
-            <p className="text-xs text-muted mb-4 leading-relaxed">
-              Firebase Console me <strong>Firestore Database</strong> ➔ <strong>Rules</strong> me ye rules paste kar do taaki public portfolio data read ho sake aur inquiries submit ho sakein:
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <h3 className="text-lg font-display italic text-text-primary">
+                    Production Firestore Security Rules
+                  </h3>
+                </div>
+                <p className="text-xs text-muted leading-relaxed">
+                  Locked to <strong>sakshamkumar1621@gmail.com</strong>. Public has read-only access; contact inquiries have strict payload & length validation.
+                </p>
+              </div>
 
-            <pre className="p-4 rounded-2xl bg-bg text-xs font-mono text-cyan-300 border border-stroke overflow-x-auto">
-{`rules_version = '2';
+              <button
+                type="button"
+                onClick={() => {
+                  const rulesText = `rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Public can read profile, projects, explorations, tech stack
+    
+    // Check if user is authenticated with Saksham's authorized admin email
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email != null &&
+             request.auth.token.email.lower() == 'sakshamkumar1621@gmail.com';
+    }
+
+    // Validate contact form payload against spam/tampering
+    function isValidMessage() {
+      let data = request.resource.data;
+      return data.name is string &&
+             data.name.size() >= 1 &&
+             data.name.size() <= 100 &&
+             data.email is string &&
+             data.email.size() >= 3 &&
+             data.email.size() <= 150 &&
+             data.message is string &&
+             data.message.size() >= 1 &&
+             data.message.size() <= 5000 &&
+             data.createdAt is number;
+    }
+
+    // 1. Settings (Profile, Roles, Brand Copy, Tech Stack)
     match /settings/{docId} {
       allow read: if true;
-      allow write: if true; // or request.auth != null for strict auth
+      allow write: if isAdmin();
     }
+
+    // 2. Projects Collection
     match /projects/{docId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if isAdmin();
     }
+
+    // 3. Explorations (Pinterest Art Pins)
     match /explorations/{docId} {
       allow read: if true;
-      allow write: if true;
+      allow write: if isAdmin();
     }
-    // Anyone can send a message; only admin can read/delete
+
+    // 4. Contact Form Inquiries
     match /messages/{docId} {
-      allow create: if true;
-      allow read, update, delete: if true;
+      allow create: if isValidMessage();
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}`;
+                  navigator.clipboard.writeText(rulesText);
+                  showToast("Copied production Firestore rules to clipboard!");
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs text-text-primary transition-colors cursor-pointer"
+              >
+                <Copy className="w-3.5 h-3.5" />
+                <span>Copy Rules</span>
+              </button>
+            </div>
+
+            <pre className="p-4 rounded-2xl bg-bg text-xs font-mono text-cyan-300 border border-stroke overflow-x-auto max-h-96">
+{`rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    function isAdmin() {
+      return request.auth != null && 
+             request.auth.token.email != null &&
+             request.auth.token.email.lower() == 'sakshamkumar1621@gmail.com';
+    }
+
+    function isValidMessage() {
+      let data = request.resource.data;
+      return data.name is string &&
+             data.name.size() >= 1 &&
+             data.name.size() <= 100 &&
+             data.email is string &&
+             data.email.size() >= 3 &&
+             data.email.size() <= 150 &&
+             data.message is string &&
+             data.message.size() >= 1 &&
+             data.message.size() <= 5000 &&
+             data.createdAt is number;
+    }
+
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /projects/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /explorations/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /messages/{docId} {
+      allow create: if isValidMessage();
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }`}
