@@ -23,6 +23,9 @@ import {
   Key,
   ShieldCheck,
   Copy,
+  Upload,
+  Image as ImageIcon,
+  X,
 } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import {
@@ -42,6 +45,54 @@ import {
 import type { ProjectItem, ExplorationItem } from "../data/portfolioData";
 import { PinterestIcon } from "../components/icons/PinterestIcon";
 import { GithubIcon } from "../components/icons/GithubIcon";
+
+/**
+ * Mobile-friendly client-side image compression:
+ * Resizes large phone camera/gallery photos to max 1200px width with 0.82 quality
+ * so images load instantly on mobile, don't break Firestore limits, and work everywhere.
+ */
+const compressAndResizeImage = (file: File, maxWidth = 1200, quality = 0.82): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          resolve(e.target?.result as string);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+
+        try {
+          const webpData = canvas.toDataURL("image/webp", quality);
+          if (webpData.startsWith("data:image/webp")) {
+            resolve(webpData);
+            return;
+          }
+        } catch {
+          // fallback
+        }
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = () => reject(new Error("Failed to parse image"));
+      img.src = e.target?.result as string;
+    };
+    reader.onerror = () => reject(new Error("Failed to read file"));
+    reader.readAsDataURL(file);
+  });
+};
 
 export const AdminPage: React.FC = () => {
   const {
@@ -255,6 +306,42 @@ export const AdminPage: React.FC = () => {
     showToast("Profile & Brand details saved successfully!");
   };
 
+  const [isProcessingImage, setIsProcessingImage] = useState(false);
+
+  const handleFileUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    target: "project" | "exp" | "avatar"
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 15 * 1024 * 1024) {
+      showToast("File is too large! Please select an image under 15MB.", "error");
+      return;
+    }
+
+    try {
+      setIsProcessingImage(true);
+      showToast("Optimizing image for fast mobile loading...");
+      const dataUrl = await compressAndResizeImage(file, 1200, 0.82);
+
+      if (target === "project") {
+        setProjectForm((prev) => ({ ...prev, image: dataUrl }));
+      } else if (target === "exp") {
+        setExpForm((prev) => ({ ...prev, image: dataUrl }));
+      } else if (target === "avatar") {
+        setProfileForm((prev) => ({ ...prev, avatar: dataUrl }));
+      }
+      showToast("Image ready & optimized!");
+    } catch (err) {
+      console.error("Image processing error:", err);
+      showToast("Failed to process image. Try another file.", "error");
+    } finally {
+      setIsProcessingImage(false);
+      e.target.value = "";
+    }
+  };
+
   // Open Project Modal
   const openNewProjectModal = () => {
     setEditingProjectId(null);
@@ -269,7 +356,7 @@ export const AdminPage: React.FC = () => {
       githubUrl: "https://github.com/saksham-kumar1621/",
       liveUrl: "",
       featured: true,
-      image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
+      image: "",
     });
     setProjectTagsInput("React, TypeScript, Tailwind");
     setIsProjectModalOpen(true);
@@ -319,8 +406,8 @@ export const AdminPage: React.FC = () => {
     setExpForm({
       title: "",
       category: "Dark Aesthetic",
-      image: "https://i.pinimg.com/736x/c2/09/c4/c209c425e1996d696b86f3f054c31099.jpg",
-      pinUrl: "https://www.pinterest.com/pin/1105633777378728765/",
+      image: "",
+      pinUrl: "https://in.pinterest.com/OneSaksham1621/",
       rotation: 0,
     });
     setIsExpModalOpen(true);
@@ -770,14 +857,27 @@ export const AdminPage: React.FC = () => {
 
               <div>
                 <label className="text-[11px] font-mono uppercase text-muted block mb-2">
-                  Avatar / Profile Photo URL
+                  Avatar / Profile Photo
                 </label>
-                <input
-                  type="text"
-                  value={profileForm.avatar}
-                  onChange={(e) => setProfileForm({ ...profileForm, avatar: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
-                />
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={profileForm.avatar}
+                    onChange={(e) => setProfileForm({ ...profileForm, avatar: e.target.value })}
+                    placeholder="https://..."
+                    className="w-full px-4 py-2.5 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
+                  />
+                  <label className="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-mono cursor-pointer shrink-0 inline-flex items-center gap-1.5 transition-colors">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Upload</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleFileUpload(e, "avatar")}
+                    />
+                  </label>
+                </div>
               </div>
 
               <div>
@@ -1479,7 +1579,7 @@ service cloud.firestore {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 md:p-8 rounded-3xl bg-surface border border-stroke shadow-2xl relative"
+              className="w-full max-w-2xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 md:p-8 rounded-3xl bg-surface border border-stroke shadow-2xl relative"
             >
               <h2 className="text-2xl font-display italic text-text-primary mb-6">
                 {editingProjectId ? "Edit Project" : "Add New Project"}
@@ -1612,17 +1712,87 @@ service cloud.firestore {
                     />
                   </div>
 
+                  {/* Cover Image Upload / URL */}
                   <div className="md:col-span-2">
-                    <label className="text-[11px] font-mono uppercase text-muted block mb-1">
-                      Cover Image URL
+                    <label className="text-[11px] font-mono uppercase text-muted block mb-1.5">
+                      Project Cover Image (Upload from Phone/PC or Paste URL)
                     </label>
-                    <input
-                      type="text"
-                      value={projectForm.image || ""}
-                      onChange={(e) => setProjectForm({ ...projectForm, image: e.target.value })}
-                      placeholder="https://images.unsplash.com/..."
-                      className="w-full px-3 py-2 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
-                    />
+
+                    {/* Image Preview Box if image exists */}
+                    {projectForm.image ? (
+                      <div className="relative mb-3 rounded-2xl overflow-hidden border border-stroke bg-bg/60 group">
+                        <img
+                          src={projectForm.image}
+                          alt="Project Preview"
+                          className="w-full h-40 sm:h-48 object-cover"
+                        />
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                          <label className="px-4 py-2 rounded-full bg-white text-black text-xs font-semibold cursor-pointer hover:bg-neutral-200 transition-colors inline-flex items-center gap-1.5">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>Change Photo</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => handleFileUpload(e, "project")}
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => setProjectForm({ ...projectForm, image: "" })}
+                            className="px-4 py-2 rounded-full bg-red-500 hover:bg-red-600 text-white text-xs font-semibold transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span>Remove</span>
+                          </button>
+                        </div>
+                        <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-sm text-[10px] font-mono text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>Image Attached</span>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Mobile-friendly Upload Box */
+                      <div className="mb-3 p-5 sm:p-6 rounded-2xl border-2 border-dashed border-stroke/80 hover:border-cyan-400/50 bg-bg/40 flex flex-col items-center justify-center text-center transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-stroke flex items-center justify-center mb-2.5 text-cyan-400">
+                          <ImageIcon className="w-5 h-5" />
+                        </div>
+                        <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition-colors cursor-pointer shadow-lg">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>{isProcessingImage ? "Processing..." : "Upload from Device / Gallery"}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleFileUpload(e, "project")}
+                          />
+                        </label>
+                        <span className="text-[11px] text-muted mt-2">
+                          Directly select screenshots from your phone gallery or computer
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Direct Image URL input */}
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={projectForm.image || ""}
+                        onChange={(e) => setProjectForm({ ...projectForm, image: e.target.value })}
+                        placeholder="Or paste direct image URL (https://...)"
+                        className="w-full px-3 py-2 rounded-xl bg-bg border border-stroke text-xs text-text-primary focus:outline-none focus:border-white/40 font-mono"
+                      />
+                      {projectForm.image && (
+                        <button
+                          type="button"
+                          onClick={() => setProjectForm({ ...projectForm, image: "" })}
+                          className="px-2.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-muted hover:text-white text-xs cursor-pointer"
+                          title="Clear image URL"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   <div className="md:col-span-2 flex items-center gap-3 pt-2">
@@ -1722,16 +1892,60 @@ service cloud.firestore {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-mono uppercase text-muted block mb-1">
-                    Image CDN URL (i.pinimg.com or unplash)
+                  <label className="text-[11px] font-mono uppercase text-muted block mb-1.5">
+                    Art Image (Upload from Phone/PC or Paste URL)
                   </label>
+
+                  {expForm.image ? (
+                    <div className="relative mb-3 rounded-2xl overflow-hidden border border-stroke bg-bg/60 group">
+                      <img
+                        src={expForm.image}
+                        alt="Pin Preview"
+                        className="w-full h-40 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                        <label className="px-4 py-2 rounded-full bg-white text-black text-xs font-semibold cursor-pointer hover:bg-neutral-200 transition-colors inline-flex items-center gap-1.5">
+                          <Upload className="w-3.5 h-3.5" />
+                          <span>Change Photo</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => handleFileUpload(e, "exp")}
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => setExpForm({ ...expForm, image: "" })}
+                          className="px-4 py-2 rounded-full bg-red-500 hover:bg-red-600 text-white text-xs font-semibold transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Remove</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mb-3 p-4 rounded-2xl border-2 border-dashed border-stroke/80 hover:border-cyan-400/50 bg-bg/40 flex flex-col items-center justify-center text-center transition-colors">
+                      <label className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition-colors cursor-pointer shadow-lg">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Artwork from Device</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleFileUpload(e, "exp")}
+                        />
+                      </label>
+                    </div>
+                  )}
+
                   <input
                     type="text"
                     required
                     value={expForm.image || ""}
                     onChange={(e) => setExpForm({ ...expForm, image: e.target.value })}
-                    placeholder="https://i.pinimg.com/736x/..."
-                    className="w-full px-3 py-2 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
+                    placeholder="Or paste image URL (https://i.pinimg.com/...)"
+                    className="w-full px-3 py-2 rounded-xl bg-bg border border-stroke text-xs text-text-primary focus:outline-none focus:border-white/40 font-mono"
                   />
                 </div>
 

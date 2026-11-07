@@ -108,7 +108,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Big Heading */}
-        <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display text-text-primary tracking-tight mb-8 max-w-3xl leading-[1.05]">
+        <h2 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display text-text-primary tracking-tight mb-8 max-w-3xl leading-[1.1]">
           Have an idea or project? Let&apos;s build{" "}
           <span className="italic font-normal">something unexpected</span>.
         </h2>
@@ -116,14 +116,14 @@ export const Footer: React.FC = () => {
         {/* Email Button with gradient hover border ring */}
         <a
           href={`mailto:${personalInfo.email}`}
-          className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 mb-16"
+          className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 mb-16 max-w-[92vw]"
         >
           {/* Animated gradient ring */}
           <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-shift" />
-          <div className="relative flex items-center gap-3 rounded-full px-8 sm:px-10 py-4 sm:py-5 bg-surface border border-stroke text-text-primary font-medium text-base sm:text-lg group-hover:border-transparent transition-all">
-            <Mail className="w-5 h-5 text-muted group-hover:text-text-primary transition-colors" />
-            <span>{personalInfo.email}</span>
-            <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+          <div className="relative flex items-center gap-2 sm:gap-3 rounded-full px-5 sm:px-10 py-3.5 sm:py-5 bg-surface border border-stroke text-text-primary font-medium text-xs sm:text-base md:text-lg group-hover:border-transparent transition-all overflow-hidden">
+            <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-muted group-hover:text-text-primary transition-colors shrink-0" />
+            <span className="truncate">{personalInfo.email}</span>
+            <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 shrink-0" />
           </div>
         </a>
 

@@ -113,12 +113,12 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* Name */}
-        <h1 className="name-reveal text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-display italic leading-[0.9] tracking-tight text-text-primary mb-6">
+        <h1 className="name-reveal text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display italic leading-[0.95] sm:leading-[0.9] tracking-tight text-text-primary mb-6">
           {personalInfo.name}
         </h1>
 
         {/* Dynamic Role Line */}
-        <div className="blur-in text-lg sm:text-xl md:text-2xl text-muted font-normal mb-5 flex items-center justify-center gap-2">
+        <div className="blur-in text-base sm:text-xl md:text-2xl text-muted font-normal mb-5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
           <span>A</span>
           <span className="inline-block relative">
             <span
