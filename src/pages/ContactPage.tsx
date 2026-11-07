@@ -183,12 +183,15 @@ export const ContactPage: React.FC = () => {
 
         {/* Right Column: Interactive Contact Form */}
         <div className="lg:col-span-7">
-          <div className="p-8 md:p-10 rounded-3xl bg-surface/60 border border-stroke relative">
+          <div className="p-8 md:p-10 rounded-3xl bg-surface/60 border border-stroke relative overflow-hidden group hover:border-stroke/90 transition-colors shadow-2xl">
+            {/* Top accent line on hover */}
+            <div className="absolute top-0 left-0 right-0 h-px accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
             <h3 className="text-2xl font-display italic text-text-primary mb-2">
               Send a Direct Dispatch
             </h3>
             <p className="text-xs text-muted mb-8">
-              Fill in your details below and it will compose directly to my inbox.
+              Fill in your details below and it will compose directly to my inbox with instant synchronization.
             </p>
 
             {formSubmitted ? (
@@ -204,7 +207,7 @@ export const ContactPage: React.FC = () => {
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
-                  className="text-xs underline text-cyan-400 cursor-pointer"
+                  className="text-xs underline text-cyan-400 cursor-pointer hover:text-cyan-300 transition-colors"
                 >
                   Send another message
                 </button>
@@ -222,7 +225,7 @@ export const ContactPage: React.FC = () => {
                       placeholder="Alex Mercer"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-bg border border-stroke rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/50 transition-colors"
+                      className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20"
                     />
                   </div>
 
@@ -236,7 +239,7 @@ export const ContactPage: React.FC = () => {
                       placeholder="alex@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-bg border border-stroke rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/50 transition-colors"
+                      className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20"
                     />
                   </div>
                 </div>
@@ -251,7 +254,7 @@ export const ContactPage: React.FC = () => {
                     placeholder="Full Stack Web App / Desktop Tool / Collaboration"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="bg-bg border border-stroke rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/50 transition-colors"
+                    className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20"
                   />
                 </div>
 
@@ -265,7 +268,7 @@ export const ContactPage: React.FC = () => {
                     placeholder="Tell me about your idea, timeline, or what you'd like to build together..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="bg-bg border border-stroke rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/50 transition-colors resize-none"
+                    className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20 resize-none"
                   />
                 </div>
 

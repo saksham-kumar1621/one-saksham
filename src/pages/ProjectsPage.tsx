@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, ArrowUpRight, Star, Terminal, Code2 } from "lucide-react";
+import { Search, ArrowUpRight, Star, Terminal, Code2, ExternalLink } from "lucide-react";
 import { GithubIcon } from "../components/icons/GithubIcon";
 import { usePortfolio } from "../context/PortfolioContext";
 import type { ProjectItem } from "../data/portfolioData";
@@ -95,68 +95,108 @@ export const ProjectsPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
-              className="group relative flex flex-col justify-between bg-surface/40 hover:bg-surface border border-stroke rounded-3xl p-6 transition-all duration-300 hover:border-stroke/90 hover:shadow-2xl overflow-hidden"
+              className="group relative flex flex-col justify-between bg-surface/40 hover:bg-surface border border-stroke rounded-3xl overflow-hidden transition-all duration-300 hover:border-stroke/90 hover:shadow-2xl hover:-translate-y-1"
             >
               {/* Subtle top accent gradient line on hover */}
-              <div className="absolute top-0 left-6 right-6 h-px accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute top-0 left-0 right-0 h-px accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
 
-              <div>
-                {/* Header Tag & Stars */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-cyan-400 font-medium px-2.5 py-0.5 rounded-full bg-cyan-950/30 border border-cyan-800/30">
+              {/* 1. Visual Cover Header with Golden Ratio Aspect (16:10 / 1.6:1) */}
+              <div className="relative w-full aspect-[16/10] overflow-hidden bg-bg border-b border-stroke/40">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src =
+                      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85";
+                  }}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-85"
+                />
+
+                {/* Halftone texture overlay */}
+                <div className="absolute inset-0 halftone-overlay opacity-20 pointer-events-none" />
+
+                {/* Ambient dark gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-black/30 pointer-events-none" />
+
+                {/* Category Pill floating top-left */}
+                <div className="absolute top-3.5 left-3.5 z-10">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-medium px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-sm">
                     {project.category}
                   </span>
-                  <div className="flex items-center gap-1 text-xs text-amber-300/80 font-mono">
-                    <Star className="w-3.5 h-3.5 fill-amber-300/20" />
+                </div>
+
+                {/* Stars floating top-right */}
+                <div className="absolute top-3.5 right-3.5 z-10">
+                  <div className="flex items-center gap-1 text-[11px] font-mono text-amber-300 px-2 py-0.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-sm">
+                    <Star className="w-3 h-3 fill-amber-300/40" />
                     <span>{project.stars}</span>
                   </div>
                 </div>
-
-                {/* Project Title */}
-                <h3 className="text-xl sm:text-2xl font-display italic text-text-primary group-hover:text-white transition-colors mb-2">
-                  {project.title}
-                </h3>
-
-                {/* Tagline */}
-                <p className="text-xs font-mono text-muted/90 mb-3 font-medium">
-                  {project.tagline}
-                </p>
-
-                {/* Description */}
-                <p className="text-xs sm:text-sm text-muted leading-relaxed mb-6">
-                  {project.description}
-                </p>
               </div>
 
-              {/* Bottom: Tags & Action Link */}
-              <div>
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-bg border border-stroke/70 text-muted"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+              {/* 2. Project Details Body */}
+              <div className="p-6 flex flex-col justify-between flex-1">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-display italic text-text-primary group-hover:text-white transition-colors mb-1.5 leading-snug">
+                    {project.title}
+                  </h3>
+
+                  <p className="text-xs font-mono text-cyan-400/90 mb-2.5 font-medium line-clamp-1">
+                    {project.tagline}
+                  </p>
+
+                  <p className="text-xs sm:text-sm text-muted leading-relaxed mb-5 line-clamp-3">
+                    {project.description}
+                  </p>
                 </div>
 
-                <div className="pt-4 border-t border-stroke/40 flex items-center justify-between">
-                  <span className="text-xs font-mono text-muted flex items-center gap-1.5">
-                    <Terminal className="w-3 h-3 text-cyan-400" />
-                    {project.language}
-                  </span>
+                {/* Bottom: Tags & Links */}
+                <div>
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-bg border border-stroke/70 text-muted"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs text-text-primary hover:text-cyan-300 font-medium transition-colors"
-                  >
-                    <GithubIcon className="w-3.5 h-3.5" />
-                    <span>Source</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
+                  <div className="pt-4 border-t border-stroke/40 flex items-center justify-between">
+                    <span className="text-xs font-mono text-muted flex items-center gap-1.5">
+                      <Terminal className="w-3 h-3 text-cyan-400" />
+                      {project.language}
+                    </span>
+
+                    <div className="flex items-center gap-3">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-xs text-muted hover:text-cyan-300 font-medium transition-colors"
+                          title="Live Application"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Live</span>
+                        </a>
+                      )}
+
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-text-primary hover:text-cyan-300 font-medium transition-colors"
+                      >
+                        <GithubIcon className="w-3.5 h-3.5" />
+                        <span>Source</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
