@@ -102,12 +102,33 @@ export const Hero: React.FC = () => {
       {/* Hero Content (centered, z-10) */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
         {/* Location & Status Badge */}
-        <div className="blur-in inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/80 border border-stroke text-muted text-xs font-mono mb-8 backdrop-blur-md">
-          <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-          <span>{personalInfo.location}</span>
-          <span className="text-stroke">•</span>
-          <span className="text-text-primary flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-amber-300" />
+        <div className="blur-in inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-surface/60 border border-white/[0.08] backdrop-blur-xl text-[11px] sm:text-xs text-muted mb-8 shadow-lg shadow-black/20 hover:border-white/20 transition-all duration-300">
+          {/* Active status pulse */}
+          <span className="flex items-center gap-1.5 text-text-primary font-medium whitespace-nowrap">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span>Available for work</span>
+          </span>
+
+          <span className="w-px h-3 bg-white/10 shrink-0" />
+
+          {/* Location */}
+          <span className="flex items-center gap-1.5 text-muted whitespace-nowrap">
+            <MapPin className="w-3 h-3 text-cyan-400/90 shrink-0" />
+            <span className="hidden sm:inline">{personalInfo.location}</span>
+            <span className="inline sm:hidden">
+              {personalInfo.location?.includes(",")
+                ? personalInfo.location.split(",")[0].trim() + ", IN"
+                : personalInfo.location || "India"}
+            </span>
+          </span>
+
+          {/* Secondary craft tag (hidden on very small mobile to keep pill compact and elegant) */}
+          <span className="hidden sm:inline w-px h-3 bg-white/10 shrink-0" />
+          <span className="hidden sm:flex items-center gap-1 text-text-secondary whitespace-nowrap">
+            <Sparkles className="w-3 h-3 text-amber-300/80 shrink-0" />
             <span>Full Stack &amp; Design</span>
           </span>
         </div>
