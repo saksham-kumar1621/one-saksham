@@ -378,10 +378,14 @@ export const AdminPage: React.FC = () => {
       .filter(Boolean);
 
     if (editingProjectId) {
-      await updateProject(editingProjectId, { ...projectForm, tags });
-      showToast("Project updated successfully!");
+      const ok = await updateProject(editingProjectId, { ...projectForm, tags });
+      if (ok) {
+        showToast("Project updated and synced to cloud!");
+      } else {
+        showToast("Saved locally. Sign in via Firebase Auth to sync to cloud.", "error");
+      }
     } else {
-      await addProject({
+      const ok = await addProject({
         name: projectForm.name || (projectForm.title?.toLowerCase().replace(/\s+/g, "-") || "project"),
         title: projectForm.title || "New Project",
         tagline: projectForm.tagline || "",
@@ -395,7 +399,11 @@ export const AdminPage: React.FC = () => {
         featured: Boolean(projectForm.featured),
         image: projectForm.image || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
       });
-      showToast("New project added to portfolio!");
+      if (ok) {
+        showToast("New project added and synced to cloud!");
+      } else {
+        showToast("Saved locally. Sign in via Firebase Auth to sync to cloud.", "error");
+      }
     }
     setIsProjectModalOpen(false);
   };
@@ -678,10 +686,20 @@ export const AdminPage: React.FC = () => {
           </Link>
 
           {/* Current User Badge */}
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-stroke text-xs text-muted font-mono">
-            <User className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="truncate max-w-[180px]">{currentUser?.email || "sakshamkumar1621@gmail.com"}</span>
-          </div>
+          {currentUser ? (
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-400 font-mono">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="truncate max-w-[200px]">{currentUser.email}</span>
+            </div>
+          ) : (
+            <div
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs text-amber-300 font-mono"
+              title="Logged in via offline passcode. Sign in with sakshamkumar1621@gmail.com to sync changes to mobile devices."
+            >
+              <AlertCircle className="w-3.5 h-3.5 text-amber-400" />
+              <span>Offline Passcode Mode</span>
+            </div>
+          )}
 
           {/* Logout */}
           <button

@@ -240,6 +240,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return true;
       } catch (e) {
         console.error("Firestore add project error:", e);
+        return false;
       }
     }
     return true;
@@ -256,6 +257,7 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         return true;
       } catch (e) {
         console.error("Firestore update project error:", e);
+        return false;
       }
     }
     return true;
