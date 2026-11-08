@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { GithubIcon } from "./icons/GithubIcon";
 import { usePortfolio } from "../context/PortfolioContext";
+import { getProjectDisplayImage, handleProjectImageError } from "../utils/projectMedia";
 
 export const SelectedWorks: React.FC = () => {
   const { projects } = usePortfolio();
@@ -79,15 +80,12 @@ export const SelectedWorks: React.FC = () => {
               }}
               className={`${colSpans[index]} relative bg-surface border border-stroke rounded-3xl overflow-hidden group cursor-pointer min-h-[320px] sm:min-h-[360px] md:min-h-[400px] lg:min-h-[440px] flex flex-col justify-end`}
             >
-              {/* Background Image */}
+              {/* Background Image (Custom upload -> Project Logo -> Emblem Card) */}
               <img
-                src={project.image}
+                src={getProjectDisplayImage(project)}
                 alt={project.title}
                 loading="lazy"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85";
-                }}
+                onError={(e) => handleProjectImageError(e, project)}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
               />
 

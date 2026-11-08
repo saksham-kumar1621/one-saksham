@@ -28,6 +28,7 @@ import {
   X,
 } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
+import { getProjectDisplayImage } from "../utils/projectMedia";
 import {
   saveFirebaseConfig,
   clearFirebaseConfig,
@@ -377,8 +378,20 @@ export const AdminPage: React.FC = () => {
       .map((t) => t.trim())
       .filter(Boolean);
 
+    // Auto-resolve: If no photo uploaded, automatically use project's real logo/asset from repo
+    const resolvedImage =
+      projectForm.image?.trim() ||
+      getProjectDisplayImage({
+        ...projectForm,
+        id: editingProjectId || undefined,
+      });
+
     if (editingProjectId) {
-      const ok = await updateProject(editingProjectId, { ...projectForm, tags });
+      const ok = await updateProject(editingProjectId, {
+        ...projectForm,
+        image: resolvedImage,
+        tags,
+      });
       if (ok) {
         showToast("Project updated and synced to cloud!");
       } else {
@@ -397,7 +410,7 @@ export const AdminPage: React.FC = () => {
         githubUrl: projectForm.githubUrl || "",
         liveUrl: projectForm.liveUrl || "",
         featured: Boolean(projectForm.featured),
-        image: projectForm.image || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
+        image: resolvedImage,
       });
       if (ok) {
         showToast("New project added and synced to cloud!");
@@ -1788,6 +1801,11 @@ service cloud.firestore {
                         <span className="text-[11px] text-muted mt-2">
                           Directly select screenshots from your phone gallery or computer
                         </span>
+
+                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-800/40 text-[10px] font-mono text-cyan-300">
+                          <Sparkles className="w-3 h-3 text-cyan-400" />
+                          <span>Photo upload na karne par project ka real logo/emblem auto use hoga</span>
+                        </div>
                       </div>
                     )}
 

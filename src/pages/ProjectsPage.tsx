@@ -4,6 +4,7 @@ import { Search, ArrowUpRight, Star, Terminal, Code2, ExternalLink } from "lucid
 import { GithubIcon } from "../components/icons/GithubIcon";
 import { usePortfolio } from "../context/PortfolioContext";
 import type { ProjectItem } from "../data/portfolioData";
+import { getProjectDisplayImage, handleProjectImageError } from "../utils/projectMedia";
 
 export const ProjectsPage: React.FC = () => {
   const { projects } = usePortfolio();
@@ -102,15 +103,12 @@ export const ProjectsPage: React.FC = () => {
 
               {/* 1. Visual Cover Header with Golden Ratio Aspect (16:10 / 1.6:1) */}
               <div className="relative w-full aspect-[16/10] overflow-hidden bg-bg border-b border-stroke/40">
+                {/* Image Resolution: Custom Upload -> Project Logo from Repo -> Branded Emblem */}
                 <img
-                  src={project.image}
+                  src={getProjectDisplayImage(project)}
                   alt={project.title}
                   loading="lazy"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src =
-                      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85";
-                  }}
+                  onError={(e) => handleProjectImageError(e, project)}
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-85"
                 />
 

@@ -113,7 +113,7 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: "https://github.com/saksham-kumar1621/modvault",
     featured: true,
     image:
-      "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=85",
+      "https://raw.githubusercontent.com/saksham-kumar1621/modvault/main/public/logo.png",
   },
   {
     id: "universal-git-pusher",
@@ -129,7 +129,7 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: "https://github.com/saksham-kumar1621/universal-git-pusher",
     featured: true,
     image:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=85",
+      "https://raw.githubusercontent.com/saksham-kumar1621/universal-git-pusher/main/public/assets/logo.png",
   },
   {
     id: "minecraft-port-forwarder",
@@ -145,7 +145,7 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: "https://github.com/saksham-kumar1621/minecraft-port-forwarder",
     featured: true,
     image:
-      "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=1200&q=85",
+      "https://raw.githubusercontent.com/saksham-kumar1621/minecraft-port-forwarder/main/assets/icon.png",
   },
   {
     id: "one-chatting",
@@ -177,7 +177,7 @@ export const PROJECTS: ProjectItem[] = [
     githubUrl: "https://github.com/saksham-kumar1621/storagerelief-github",
     featured: false,
     image:
-      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=1200&q=85",
+      "https://raw.githubusercontent.com/saksham-kumar1621/storagerelief-github/main/src-tauri/icons/icon.png",
   },
   {
     id: "naruto-draft-duel",
