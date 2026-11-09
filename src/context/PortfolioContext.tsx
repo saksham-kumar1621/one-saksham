@@ -57,7 +57,31 @@ function getCached<T>(key: string, fallback: T): T {
   if (typeof window === "undefined") return fallback;
   try {
     const item = localStorage.getItem(`${LOCAL_STORAGE_PREFIX}${key}`);
-    return item ? JSON.parse(item) : fallback;
+    if (!item) return fallback;
+    const parsed = JSON.parse(item);
+
+    // If reading projects, ensure bundled /projects/ assets and fallback logo are synced
+    if (key === "projects" && Array.isArray(parsed) && Array.isArray(fallback)) {
+      return parsed.map((p: any) => {
+        const defaultProj = (fallback as any[]).find((f: any) => f.id === p.id);
+        if (
+          defaultProj &&
+          defaultProj.image?.startsWith("/projects/") &&
+          (!p.image ||
+            p.image.includes("raw.githubusercontent.com") ||
+            p.image.includes("images.unsplash.com"))
+        ) {
+          return { ...p, image: defaultProj.image };
+        }
+        // If minecraft-port-forwarder has a raw logo stored as image, clear it so it activates auto-fallback
+        if (p.id === "minecraft-port-forwarder" && p.image?.includes("raw.githubusercontent.com")) {
+          return { ...p, image: "" };
+        }
+        return p;
+      }) as unknown as T;
+    }
+
+    return parsed;
   } catch {
     return fallback;
   }

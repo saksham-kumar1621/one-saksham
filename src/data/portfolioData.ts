@@ -112,8 +112,7 @@ export const PROJECTS: ProjectItem[] = [
     stars: 2,
     githubUrl: "https://github.com/saksham-kumar1621/modvault",
     featured: true,
-    image:
-      "https://raw.githubusercontent.com/saksham-kumar1621/modvault/main/public/logo.png",
+    image: "/projects/modvault.webp",
   },
   {
     id: "universal-git-pusher",
@@ -128,8 +127,7 @@ export const PROJECTS: ProjectItem[] = [
     stars: 2,
     githubUrl: "https://github.com/saksham-kumar1621/universal-git-pusher",
     featured: true,
-    image:
-      "https://raw.githubusercontent.com/saksham-kumar1621/universal-git-pusher/main/public/assets/logo.png",
+    image: "/projects/universal-git-pusher.webp",
   },
   {
     id: "minecraft-port-forwarder",
@@ -144,8 +142,7 @@ export const PROJECTS: ProjectItem[] = [
     stars: 2,
     githubUrl: "https://github.com/saksham-kumar1621/minecraft-port-forwarder",
     featured: true,
-    image:
-      "https://raw.githubusercontent.com/saksham-kumar1621/minecraft-port-forwarder/main/assets/icon.png",
+    image: "", // No photo: auto-falls back to repo logo (creeper wifi icon)
   },
   {
     id: "one-chatting",
@@ -160,8 +157,7 @@ export const PROJECTS: ProjectItem[] = [
     stars: 2,
     githubUrl: "https://github.com/saksham-kumar1621/one-chatting",
     featured: true,
-    image:
-      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
+    image: "/projects/one-chatting.webp",
   },
   {
     id: "storagerelief",

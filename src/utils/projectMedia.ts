@@ -121,8 +121,13 @@ export const getProjectDisplayImage = (
   // 1. If user uploaded a custom image (Base64 data or non-stock URL), use it immediately
   const rawImage = project.image?.trim();
   if (rawImage && rawImage.length > 0) {
-    // If it's a data URL or valid custom photo, use it
-    if (rawImage.startsWith("data:image/") || rawImage.startsWith("blob:")) {
+    // If it's a data URL, relative bundled asset, or blob, use it immediately
+    if (
+      rawImage.startsWith("data:image/") ||
+      rawImage.startsWith("blob:") ||
+      rawImage.startsWith("/") ||
+      rawImage.startsWith("./")
+    ) {
       return rawImage;
     }
     // If it's not a generic unsplash placeholder, return it
@@ -190,3 +195,4 @@ export const handleProjectImageError = (
     project.language || "TypeScript"
   );
 };
+
