@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Hls from "hls.js";
 import gsap from "gsap";
 import { ArrowUpRight, Mail, Lock } from "lucide-react";
@@ -11,6 +11,7 @@ const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2
 
 export const Footer: React.FC = () => {
   const { personalInfo } = usePortfolio();
+  const location = useLocation();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
 
@@ -46,7 +47,7 @@ export const Footer: React.FC = () => {
     };
   }, []);
 
-  // GSAP Marquee: xPercent: -50, duration: 40, ease: "none", repeat: -1
+  // GSAP Marquee: xPercent: -50, duration: 38, ease: "none", repeat: -1
   useEffect(() => {
     if (!marqueeRef.current) return;
 
@@ -62,12 +63,15 @@ export const Footer: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
+  // Don't render full marketing footer on CMS Admin page
+  if (location.pathname === "/admin") return null;
+
   const marqueeText = Array(10).fill("BUILDING THINGS NOBODY ASKED FOR • ").join("");
 
   return (
     <footer
       id="contact-footer"
-      className="relative bg-bg pt-16 md:pt-24 pb-8 md:pb-12 overflow-hidden border-t border-stroke/30"
+      className="relative bg-bg pt-16 md:pt-24 pb-12 sm:pb-10 md:pb-14 overflow-hidden border-t border-stroke/30"
     >
       {/* Background Video (Flipped Vertically) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
@@ -79,14 +83,16 @@ export const Footer: React.FC = () => {
           playsInline
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover scale-y-[-1] opacity-45"
         />
-        {/* Heavier overlay */}
+        {/* Darkening overlay */}
         <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" />
         {/* Top gradient fade into footer */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg to-transparent" />
+        {/* Bottom gradient fade for crystal-clear baseline legibility */}
+        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg via-bg/90 to-transparent" />
       </div>
 
       {/* GSAP Marquee Banner */}
-      <div className="relative z-10 w-full overflow-hidden py-4 border-y border-stroke/40 backdrop-blur-sm bg-bg/40 mb-16 md:mb-20">
+      <div className="relative z-10 w-full overflow-hidden py-4 border-y border-stroke/40 backdrop-blur-sm bg-bg/40 mb-14 md:mb-20">
         <div
           ref={marqueeRef}
           className="whitespace-nowrap flex font-mono text-xs sm:text-sm tracking-[0.25em] text-muted font-medium select-none uppercase"
@@ -116,7 +122,7 @@ export const Footer: React.FC = () => {
         {/* Email Button with gradient hover border ring */}
         <a
           href={`mailto:${personalInfo.email}`}
-          className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 mb-16 max-w-[92vw]"
+          className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 mb-14 md:mb-16 max-w-[92vw]"
         >
           {/* Animated gradient ring */}
           <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-shift" />
@@ -127,66 +133,80 @@ export const Footer: React.FC = () => {
           </div>
         </a>
 
-        {/* Footer Bottom Bar */}
-        <div className="w-full pt-8 border-t border-stroke/50 flex flex-col sm:flex-row items-center justify-between gap-6">
-          {/* Social Links */}
-          <div className="flex items-center gap-6 sm:gap-8">
-            <a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
-            >
-              <GithubIcon className="w-4 h-4" />
-              <span>GitHub</span>
-              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
-            </a>
+        {/* Footer Bottom Container */}
+        <div className="w-full pt-10 border-t border-stroke/40 flex flex-col gap-6 sm:gap-8">
+          {/* Row 1: Social Pill Navigation + Status Badge */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+            {/* Social Pills */}
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
+              <a
+                href={personalInfo.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface/60 hover:bg-surface border border-stroke/50 hover:border-stroke text-xs text-muted hover:text-text-primary transition-all duration-200 group"
+              >
+                <GithubIcon className="w-3.5 h-3.5" />
+                <span>GitHub</span>
+                <ArrowUpRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
 
-            <a
-              href={personalInfo.pinterest}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
-            >
-              <PinterestIcon className="w-4 h-4" />
-              <span>Pinterest</span>
-              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
-            </a>
+              <a
+                href={personalInfo.pinterest}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface/60 hover:bg-surface border border-stroke/50 hover:border-stroke text-xs text-muted hover:text-text-primary transition-all duration-200 group"
+              >
+                <PinterestIcon className="w-3.5 h-3.5" />
+                <span>Pinterest</span>
+                <ArrowUpRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
 
-            <a
-              href={`mailto:${personalInfo.email}`}
-              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
-            >
-              <span>Email</span>
-              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
-            </a>
+              <a
+                href={`mailto:${personalInfo.email}`}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface/60 hover:bg-surface border border-stroke/50 hover:border-stroke text-xs text-muted hover:text-text-primary transition-all duration-200 group"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>Email</span>
+                <ArrowUpRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            </div>
+
+            {/* Live Availability Status Badge */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-surface/70 border border-stroke/60 backdrop-blur-md shadow-sm">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+              </span>
+              <span className="text-[11px] sm:text-xs text-text-primary/90 font-medium tracking-wide">
+                {personalInfo.status}
+              </span>
+            </div>
           </div>
 
-          {/* Green Pulsing Dot + Status */}
-          <div className="flex items-center gap-2.5 bg-surface/70 border border-stroke/60 rounded-full px-4 py-1.5 backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span className="text-xs text-text-primary/90 font-medium tracking-wide">
-              {personalInfo.status}
-            </span>
-          </div>
+          {/* Row 2: Meta Baseline (Copyright, Location & Admin CMS) */}
+          <div className="pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted/70 font-mono">
+            {/* Copyright & Location (Clean centered on mobile, left on desktop) */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1 text-center sm:text-left">
+              <span>&copy; {new Date().getFullYear()} {personalInfo.alias}</span>
+              <span className="text-stroke/80">•</span>
+              <span>{personalInfo.location}</span>
+            </div>
 
-          {/* Copyright / Location & Admin Link */}
-          <div className="flex items-center gap-4 text-xs text-muted font-mono">
-            <span>
-              &copy; {new Date().getFullYear()} {personalInfo.alias} • {personalInfo.location}
-            </span>
-            <span className="text-stroke">•</span>
-            <Link
-              to="/admin"
-              className="text-muted/60 hover:text-text-primary transition-colors flex items-center gap-1"
-              title="Admin Dashboard"
-            >
-              <Lock className="w-3 h-3" />
-              <span>CMS</span>
-            </Link>
+            {/* Admin CMS Access */}
+            <div className="flex items-center gap-3">
+              <span className="text-[11px] text-muted/40 hidden md:inline">
+                All Rights Reserved
+              </span>
+              <span className="text-stroke/40 hidden md:inline">•</span>
+              <Link
+                to="/admin"
+                className="inline-flex items-center gap-1.5 text-[11px] text-muted/60 hover:text-text-primary transition-colors py-1 px-2.5 rounded-full bg-surface/40 hover:bg-surface border border-stroke/40 hover:border-stroke"
+                title="Admin Dashboard"
+              >
+                <Lock className="w-3 h-3 text-muted/60" />
+                <span>CMS</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
