@@ -56,8 +56,11 @@ export const Stats: React.FC = () => {
                 Work Standards & Value
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display italic tracking-tight text-text-primary">
-              Engineered for trust.
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-text-primary tracking-tight font-light">
+              Engineered for{" "}
+              <span className="font-display italic text-text-primary font-normal">
+                trust
+              </span>
             </h2>
           </div>
           <p className="text-xs md:text-sm text-muted max-w-md leading-relaxed">

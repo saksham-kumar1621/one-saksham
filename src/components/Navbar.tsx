@@ -81,12 +81,13 @@ export const Navbar: React.FC = () => {
         {/* 5. "Say hi" button -> /contact */}
         <Link
           to="/contact"
-          className="relative group text-[11px] sm:text-sm rounded-full py-1.5 sm:py-2 px-2.5 sm:px-4 cursor-pointer transition-all duration-300 shrink-0 whitespace-nowrap"
+          className={`relative group text-[11px] sm:text-sm rounded-full py-1.5 sm:py-2 px-2.5 sm:px-4 cursor-pointer transition-all duration-300 shrink-0 whitespace-nowrap ${
+            location.pathname === "/contact"
+              ? "text-text-primary bg-stroke/60 font-medium shadow-sm"
+              : "text-muted hover:text-text-primary hover:bg-stroke/40"
+          }`}
         >
-          {/* Animated gradient border behind on hover */}
-          <span className="absolute -inset-[2px] rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-shift -z-10" />
-
-          <span className="relative flex items-center gap-1 sm:gap-1.5 text-text-primary font-medium">
+          <span className="relative flex items-center gap-1 sm:gap-1.5 font-medium">
             <span>Say hi</span>
             <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>

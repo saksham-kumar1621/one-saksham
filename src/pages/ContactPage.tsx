@@ -81,8 +81,11 @@ export const ContactPage: React.FC = () => {
           </span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display italic text-text-primary tracking-tight mb-6">
-          Let&apos;s Build Something Real
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-text-primary tracking-tight font-light mb-6">
+          Let&apos;s build{" "}
+          <span className="font-display italic text-text-primary font-normal">
+            something real
+          </span>
         </h1>
 
         <p className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed">
@@ -170,12 +173,12 @@ export const ContactPage: React.FC = () => {
           </div>
 
           {/* Availability Status */}
-          <div className="p-5 rounded-2xl bg-emerald-950/20 border border-emerald-800/30 flex items-center gap-3">
+          <div className="p-5 rounded-2xl bg-surface/50 border border-stroke flex items-center gap-3">
             <span className="relative flex h-3 w-3 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
             </span>
-            <p className="text-xs text-emerald-200">
+            <p className="text-xs text-text-primary/90 font-medium leading-relaxed">
               Currently accepting selected freelance projects, consultation & full-time opportunities.
             </p>
           </div>

@@ -22,8 +22,11 @@ export const AboutPage: React.FC = () => {
           </span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display italic text-text-primary tracking-tight mb-6">
-          The Story Behind The Code
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-text-primary tracking-tight font-light mb-6">
+          The story behind{" "}
+          <span className="font-display italic text-text-primary font-normal">
+            the code
+          </span>
         </h1>
 
         <p className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed">
@@ -84,7 +87,7 @@ export const AboutPage: React.FC = () => {
               <img
                 src={personalInfo.avatar}
                 alt={personalInfo.fullName}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-85"
+                className="w-full h-full object-cover object-top sm:object-center group-hover:scale-105 transition-transform duration-700 ease-out opacity-85"
               />
               {/* Halftone texture overlay */}
               <div className="absolute inset-0 halftone-overlay opacity-25 pointer-events-none" />
@@ -95,7 +98,7 @@ export const AboutPage: React.FC = () => {
               <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-emerald-400 text-[10px] font-mono shadow-sm">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
                 </span>
                 <span>Available for work</span>
               </div>

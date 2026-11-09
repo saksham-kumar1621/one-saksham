@@ -40,8 +40,11 @@ export const ProjectsPage: React.FC = () => {
           </span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display italic text-text-primary tracking-tight mb-6">
-          Selected Works & Tools
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-text-primary tracking-tight font-light mb-6">
+          Selected{" "}
+          <span className="font-display italic text-text-primary font-normal">
+            works &amp; tools
+          </span>
         </h1>
 
         <p className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed">
@@ -59,8 +62,8 @@ export const ProjectsPage: React.FC = () => {
               onClick={() => setSelectedCategory(cat)}
               className={`text-xs px-4 py-2 rounded-full transition-all duration-200 cursor-pointer ${
                 selectedCategory === cat
-                  ? "bg-text-primary text-bg font-semibold shadow-md"
-                  : "bg-surface border border-stroke text-muted hover:text-text-primary hover:border-stroke/80"
+                  ? "bg-surface border border-white/30 text-white font-medium shadow-md shadow-black/40 ring-1 ring-white/10"
+                  : "bg-surface/50 border border-stroke text-muted hover:text-text-primary hover:border-stroke/80"
               }`}
             >
               {cat}
@@ -214,11 +217,14 @@ export const ProjectsPage: React.FC = () => {
           href="https://github.com/saksham-kumar1621"
           target="_blank"
           rel="noopener noreferrer"
-          className="group inline-flex items-center gap-2 rounded-full px-6 py-3 bg-text-primary text-bg text-xs font-semibold hover:bg-bg hover:text-text-primary border border-transparent hover:border-stroke transition-all duration-300"
+          className="group relative rounded-full p-[1.5px] cursor-pointer transition-transform duration-300 hover:scale-105 inline-block"
         >
-          <GithubIcon className="w-4 h-4" />
-          <span>github.com/saksham-kumar1621</span>
-          <ArrowUpRight className="w-3.5 h-3.5" />
+          <span className="absolute inset-0 rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-gradient-shift" />
+          <div className="relative flex items-center gap-2 rounded-full px-6 py-3 bg-surface border border-stroke text-text-primary text-xs font-medium group-hover:border-transparent transition-colors">
+            <GithubIcon className="w-4 h-4" />
+            <span>github.com/saksham-kumar1621</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </div>
         </a>
       </div>
     </div>

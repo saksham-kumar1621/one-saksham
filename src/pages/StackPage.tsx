@@ -170,8 +170,11 @@ export const StackPage: React.FC = () => {
           </span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display italic text-text-primary tracking-tight mb-6">
-          Technical Stack & Philosophy
+        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl text-text-primary tracking-tight font-light mb-6">
+          Technical stack &amp;{" "}
+          <span className="font-display italic text-text-primary font-normal">
+            philosophy
+          </span>
         </h1>
 
         <p className="text-base sm:text-lg text-muted max-w-2xl leading-relaxed">
@@ -187,8 +190,8 @@ export const StackPage: React.FC = () => {
             onClick={() => setSelectedFilter(cat)}
             className={`text-xs px-4 py-2 rounded-full transition-all duration-200 cursor-pointer ${
               selectedFilter === cat
-                ? "bg-text-primary text-bg font-semibold shadow-md"
-                : "bg-surface border border-stroke text-muted hover:text-text-primary hover:border-stroke/80"
+                ? "bg-surface border border-white/30 text-white font-medium shadow-md shadow-black/40 ring-1 ring-white/10"
+                : "bg-surface/50 border border-stroke text-muted hover:text-text-primary hover:border-stroke/80"
             }`}
           >
             {cat}
