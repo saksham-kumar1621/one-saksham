@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Hls from "hls.js";
 import gsap from "gsap";
-import { ArrowUpRight, Mail, Lock } from "lucide-react";
+import { ArrowUpRight, Mail, Lock, MapPin } from "lucide-react";
 import { GithubIcon } from "./icons/GithubIcon";
 import { PinterestIcon } from "./icons/PinterestIcon";
 import { usePortfolio } from "../context/PortfolioContext";
@@ -71,7 +71,7 @@ export const Footer: React.FC = () => {
   return (
     <footer
       id="contact-footer"
-      className="relative bg-bg pt-16 md:pt-24 pb-12 sm:pb-10 md:pb-14 overflow-hidden border-t border-stroke/30"
+      className="relative bg-bg pt-16 md:pt-24 pb-12 sm:pb-8 md:pb-12 overflow-hidden border-t border-stroke/30"
     >
       {/* Background Video (Flipped Vertically) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
@@ -133,77 +133,73 @@ export const Footer: React.FC = () => {
           </div>
         </a>
 
-        {/* Footer Bottom Container */}
-        <div className="w-full pt-10 border-t border-stroke/40 flex flex-col gap-6 sm:gap-8">
-          {/* Row 1: Social Pill Navigation + Status Badge */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
-            {/* Social Pills */}
-            <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
-              <a
-                href={personalInfo.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface/60 hover:bg-surface border border-stroke/50 hover:border-stroke text-xs text-muted hover:text-text-primary transition-all duration-200 group"
-              >
-                <GithubIcon className="w-3.5 h-3.5" />
-                <span>GitHub</span>
-                <ArrowUpRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+        {/* Footer Bottom Bar */}
+        <div className="w-full pt-8 sm:pt-10 border-t border-stroke/40 flex flex-col sm:flex-row items-center justify-between gap-6">
+          {/* 1. Social Links (Original sleek text with hover arrow) */}
+          <div className="flex items-center gap-6 sm:gap-8">
+            <a
+              href={personalInfo.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+            >
+              <GithubIcon className="w-4 h-4" />
+              <span>GitHub</span>
+              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+            </a>
 
-              <a
-                href={personalInfo.pinterest}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface/60 hover:bg-surface border border-stroke/50 hover:border-stroke text-xs text-muted hover:text-text-primary transition-all duration-200 group"
-              >
-                <PinterestIcon className="w-3.5 h-3.5" />
-                <span>Pinterest</span>
-                <ArrowUpRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+            <a
+              href={personalInfo.pinterest}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+            >
+              <PinterestIcon className="w-4 h-4" />
+              <span>Pinterest</span>
+              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+            </a>
 
-              <a
-                href={`mailto:${personalInfo.email}`}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface/60 hover:bg-surface border border-stroke/50 hover:border-stroke text-xs text-muted hover:text-text-primary transition-all duration-200 group"
-              >
-                <Mail className="w-3.5 h-3.5" />
-                <span>Email</span>
-                <ArrowUpRight className="w-3 h-3 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-            </div>
-
-            {/* Live Availability Status Badge */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-surface/70 border border-stroke/60 backdrop-blur-md shadow-sm">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
-              </span>
-              <span className="text-[11px] sm:text-xs text-text-primary/90 font-medium tracking-wide">
-                {personalInfo.status}
-              </span>
-            </div>
+            <a
+              href={`mailto:${personalInfo.email}`}
+              className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+            >
+              <span>Email</span>
+              <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+            </a>
           </div>
 
-          {/* Row 2: Meta Baseline (Copyright, Location & Admin CMS) */}
-          <div className="pt-6 border-t border-white/[0.05] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted/70 font-mono">
-            {/* Copyright & Location (Clean centered on mobile, left on desktop) */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-2 gap-y-1 text-center sm:text-left">
-              <span>&copy; {new Date().getFullYear()} {personalInfo.alias}</span>
-              <span className="text-stroke/80">•</span>
-              <span>{personalInfo.location}</span>
+          {/* 2. Redesigned Available Box (Refined status capsule) */}
+          <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-surface/50 border border-white/[0.08] backdrop-blur-xl shadow-sm hover:border-white/20 transition-all duration-300">
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]" />
+            </span>
+            <span className="text-[11px] sm:text-xs text-text-primary/90 font-medium tracking-wide whitespace-nowrap">
+              {personalInfo.status}
+            </span>
+          </div>
+
+          {/* 3. Redesigned One Saksham & Address Block (Polished typography & hierarchy) */}
+          <div className="flex flex-col items-center sm:items-end text-xs text-muted gap-1">
+            {/* Brand Copyright */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-muted/60">&copy; {new Date().getFullYear()}</span>
+              <span className="font-display italic text-sm text-text-primary tracking-tight font-normal">
+                {personalInfo.alias}
+              </span>
             </div>
 
-            {/* Admin CMS Access */}
-            <div className="flex items-center gap-3">
-              <span className="text-[11px] text-muted/40 hidden md:inline">
-                All Rights Reserved
-              </span>
-              <span className="text-stroke/40 hidden md:inline">•</span>
+            {/* Address & CMS Link */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-end gap-1.5 text-[11px] text-muted/70">
+              <MapPin className="w-3 h-3 text-cyan-400/80 shrink-0" />
+              <span>{personalInfo.location}</span>
+              <span className="text-stroke/60">•</span>
               <Link
                 to="/admin"
-                className="inline-flex items-center gap-1.5 text-[11px] text-muted/60 hover:text-text-primary transition-colors py-1 px-2.5 rounded-full bg-surface/40 hover:bg-surface border border-stroke/40 hover:border-stroke"
+                className="text-muted/60 hover:text-text-primary transition-colors flex items-center gap-1 py-0.5 px-1 rounded hover:bg-surface/60"
                 title="Admin Dashboard"
               >
-                <Lock className="w-3 h-3 text-muted/60" />
+                <Lock className="w-2.5 h-2.5 text-muted/70" />
                 <span>CMS</span>
               </Link>
             </div>
