@@ -98,7 +98,7 @@ export const ContactPage: React.FC = () => {
         <div className="lg:col-span-5 flex flex-col gap-6">
           {/* Quick Email Card */}
           <div className="p-8 rounded-3xl bg-surface border border-stroke relative overflow-hidden group">
-            <span className="text-xs uppercase font-mono tracking-widest text-cyan-400 block mb-2">
+            <span className="text-xs uppercase font-mono tracking-widest text-brand-light block mb-2">
               Direct Mail
             </span>
             <p className="text-2xl font-display italic text-text-primary mb-6">
@@ -127,7 +127,7 @@ export const ContactPage: React.FC = () => {
           <div className="p-6 rounded-3xl bg-surface/40 border border-stroke flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-2xl bg-bg border border-stroke/70">
-                <MapPin className="w-4 h-4 text-cyan-400" />
+                <MapPin className="w-4 h-4 text-brand-light" />
               </div>
               <div>
                 <span className="text-xs font-semibold text-text-primary block">
@@ -138,7 +138,7 @@ export const ContactPage: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-bg border border-stroke text-xs font-mono text-muted">
-              <Clock className="w-3.5 h-3.5 text-cyan-400" />
+              <Clock className="w-3.5 h-3.5 text-brand-light" />
               <span>{istTime || "IST"}</span>
             </div>
           </div>
@@ -164,7 +164,7 @@ export const ContactPage: React.FC = () => {
               rel="noopener noreferrer"
               className="p-5 rounded-2xl bg-surface/40 border border-stroke hover:bg-surface hover:border-text-primary/40 transition-all group flex flex-col justify-between"
             >
-              <Compass className="w-6 h-6 text-rose-400 mb-3 group-hover:scale-110 transition-transform" />
+              <Compass className="w-6 h-6 text-brand-light mb-3 group-hover:scale-110 transition-transform" />
               <div>
                 <span className="text-xs text-muted block font-mono">Pinterest</span>
                 <span className="text-sm font-medium text-text-primary">@OneSaksham1621</span>
@@ -210,7 +210,7 @@ export const ContactPage: React.FC = () => {
                 </p>
                 <button
                   onClick={() => setFormSubmitted(false)}
-                  className="text-xs underline text-cyan-400 cursor-pointer hover:text-cyan-300 transition-colors"
+                  className="text-xs underline text-brand-light cursor-pointer hover:text-white transition-colors"
                 >
                   Send another message
                 </button>
@@ -228,7 +228,7 @@ export const ContactPage: React.FC = () => {
                       placeholder="Alex Mercer"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20"
+                      className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-brand-light/70 focus:ring-2 focus:ring-brand/20 transition-all duration-300 shadow-inner shadow-black/20"
                     />
                   </div>
 
@@ -242,7 +242,7 @@ export const ContactPage: React.FC = () => {
                       placeholder="alex@example.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20"
+                      className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-brand-light/70 focus:ring-2 focus:ring-brand/20 transition-all duration-300 shadow-inner shadow-black/20"
                     />
                   </div>
                 </div>
@@ -257,7 +257,7 @@ export const ContactPage: React.FC = () => {
                     placeholder="Full Stack Web App / Desktop Tool / Collaboration"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20"
+                    className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-brand-light/70 focus:ring-2 focus:ring-brand/20 transition-all duration-300 shadow-inner shadow-black/20"
                   />
                 </div>
 
@@ -271,7 +271,7 @@ export const ContactPage: React.FC = () => {
                     placeholder="Tell me about your idea, timeline, or what you'd like to build together..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-cyan-400/80 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300 shadow-inner shadow-black/20 resize-none"
+                    className="bg-bg/90 border border-stroke/80 rounded-2xl px-4 py-3 text-sm text-text-primary placeholder:text-muted/40 focus:outline-none focus:border-brand-light/70 focus:ring-2 focus:ring-brand/20 transition-all duration-300 shadow-inner shadow-black/20 resize-none"
                   />
                 </div>
 

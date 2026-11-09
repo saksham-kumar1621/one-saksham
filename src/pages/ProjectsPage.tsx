@@ -79,7 +79,7 @@ export const ProjectsPage: React.FC = () => {
             placeholder="Search projects or tags..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-surface/70 border border-stroke rounded-full pl-10 pr-4 py-2 text-xs text-text-primary placeholder:text-muted/60 focus:outline-none focus:border-cyan-400/50 transition-colors"
+            className="w-full bg-surface/70 border border-stroke rounded-full pl-10 pr-4 py-2 text-xs text-text-primary placeholder:text-muted/60 focus:outline-none focus:border-brand-light/60 transition-colors"
           />
         </div>
       </div>
@@ -123,7 +123,7 @@ export const ProjectsPage: React.FC = () => {
 
                 {/* Category Pill floating top-left */}
                 <div className="absolute top-3.5 left-3.5 z-10">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-medium px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-sm">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-brand-light font-medium px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/10 shadow-sm">
                     {project.category}
                   </span>
                 </div>
@@ -144,7 +144,7 @@ export const ProjectsPage: React.FC = () => {
                     {project.title}
                   </h3>
 
-                  <p className="text-xs font-mono text-cyan-400/90 mb-2.5 font-medium line-clamp-1">
+                  <p className="text-xs font-mono text-brand-light/90 mb-2.5 font-medium line-clamp-1">
                     {project.tagline}
                   </p>
 
@@ -168,7 +168,7 @@ export const ProjectsPage: React.FC = () => {
 
                   <div className="pt-4 border-t border-stroke/40 flex items-center justify-between">
                     <span className="text-xs font-mono text-muted flex items-center gap-1.5">
-                      <Terminal className="w-3 h-3 text-cyan-400" />
+                      <Terminal className="w-3 h-3 text-brand-light" />
                       {project.language}
                     </span>
 
@@ -178,7 +178,7 @@ export const ProjectsPage: React.FC = () => {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-muted hover:text-cyan-300 font-medium transition-colors"
+                          className="inline-flex items-center gap-1 text-xs text-muted hover:text-brand-light font-medium transition-colors"
                           title="Live Application"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
@@ -190,7 +190,7 @@ export const ProjectsPage: React.FC = () => {
                         href={project.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs text-text-primary hover:text-cyan-300 font-medium transition-colors"
+                        className="inline-flex items-center gap-1.5 text-xs text-text-primary hover:text-brand-light font-medium transition-colors"
                       >
                         <GithubIcon className="w-3.5 h-3.5" />
                         <span>Source</span>

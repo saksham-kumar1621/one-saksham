@@ -98,7 +98,7 @@ export const SelectedWorks: React.FC = () => {
               {/* Default Card Bottom Info */}
               <div className="relative z-10 p-5 sm:p-6 md:p-8 flex flex-col sm:flex-row sm:items-end justify-between gap-3 transition-opacity duration-300 md:group-hover:opacity-30">
                 <div className="max-w-md">
-                  <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-cyan-400 font-medium block mb-1">
+                  <span className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-brand-light font-medium block mb-1">
                     {project.category} • {project.language}
                   </span>
                   <h3 className="text-lg sm:text-xl md:text-2xl text-text-primary font-medium tracking-tight mb-1 sm:mb-2 line-clamp-1 sm:line-clamp-none">

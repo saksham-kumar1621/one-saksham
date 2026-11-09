@@ -14,6 +14,11 @@ export default {
         muted: "hsl(var(--muted))",
         stroke: "hsl(var(--stroke))",
         accent: "hsl(var(--accent))",
+        brand: {
+          light: "#89AACC",
+          DEFAULT: "#4E85BF",
+          dark: "#356499",
+        },
       },
       fontFamily: {
         body: ["var(--font-body)", "Inter", "sans-serif"],

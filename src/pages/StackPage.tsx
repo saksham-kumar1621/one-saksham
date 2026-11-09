@@ -213,7 +213,7 @@ export const StackPage: React.FC = () => {
             
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-medium px-2.5 py-0.5 rounded-full bg-cyan-950/20 border border-cyan-800/30">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-brand-light font-medium px-2.5 py-0.5 rounded-full bg-brand/10 border border-brand/20">
                   {item.category}
                 </span>
                 <span className="text-[11px] font-mono text-muted/70">
@@ -236,10 +236,10 @@ export const StackPage: React.FC = () => {
 
             <div className="pt-4 border-t border-stroke/40 flex items-center justify-between text-xs text-muted">
               <span className="flex items-center gap-1.5 font-mono text-[11px]">
-                <Zap className="w-3 h-3 text-amber-300" />
+                <Zap className="w-3 h-3 text-brand-light/90" />
                 Active in Production
               </span>
-              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400/60" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-brand-light/70" />
             </div>
           </motion.div>
         ))}
@@ -248,7 +248,7 @@ export const StackPage: React.FC = () => {
       {/* Stack Philosophy Card */}
       <div className="rounded-3xl bg-surface/30 border border-stroke p-8 md:p-12 relative overflow-hidden">
         <div className="max-w-3xl">
-          <div className="flex items-center gap-2 text-xs uppercase font-mono tracking-widest text-cyan-400 mb-3">
+          <div className="flex items-center gap-2 text-xs uppercase font-mono tracking-widest text-brand-light mb-3">
             <Cpu className="w-4 h-4" />
             <span>Architecture Core Tenet</span>
           </div>
@@ -260,7 +260,7 @@ export const StackPage: React.FC = () => {
           </p>
           <Link
             to="/projects"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-text-primary font-medium hover:text-cyan-300 transition-colors"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-wider text-text-primary font-medium hover:text-brand-light transition-colors"
           >
             <span>See these technologies applied in real projects</span>
             <ArrowUpRight className="w-4 h-4" />

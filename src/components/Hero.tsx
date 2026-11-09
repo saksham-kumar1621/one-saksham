@@ -116,7 +116,7 @@ export const Hero: React.FC = () => {
 
           {/* Location */}
           <span className="flex items-center gap-1.5 text-muted whitespace-nowrap">
-            <MapPin className="w-3 h-3 text-cyan-400/90 shrink-0" />
+            <MapPin className="w-3 h-3 text-brand-light shrink-0" />
             <span className="hidden sm:inline">{personalInfo.location}</span>
             <span className="inline sm:hidden">
               {personalInfo.location?.includes(",")
@@ -128,7 +128,7 @@ export const Hero: React.FC = () => {
           {/* Secondary craft tag (hidden on very small mobile to keep pill compact and elegant) */}
           <span className="hidden sm:inline w-px h-3 bg-white/10 shrink-0" />
           <span className="hidden sm:flex items-center gap-1 text-text-secondary whitespace-nowrap">
-            <Sparkles className="w-3 h-3 text-amber-300/80 shrink-0" />
+            <Sparkles className="w-3 h-3 text-brand-light/90 shrink-0" />
             <span>Full Stack &amp; Design</span>
           </span>
         </div>

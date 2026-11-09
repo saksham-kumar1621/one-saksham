@@ -90,7 +90,7 @@ export const Stats: React.FC = () => {
 
                 {/* Card Top: Tag + Icon */}
                 <div className="flex items-center justify-between mb-6">
-                  <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 border border-stroke text-muted group-hover:text-cyan-300 group-hover:border-cyan-500/30 transition-colors">
+                  <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 border border-stroke text-muted group-hover:text-brand-light group-hover:border-brand/40 transition-colors">
                     {item.tag}
                   </span>
                   <div className="w-8 h-8 rounded-xl bg-white/5 border border-stroke flex items-center justify-center text-muted group-hover:text-white transition-colors">

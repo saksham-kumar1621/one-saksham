@@ -27,8 +27,8 @@ const techGroups: TechGroup[] = [
     subtitle: "Client Engineering",
     tagline: "Obsessed with micro-interactions, layout precision, and fluid 60fps animations.",
     colSpan: "md:col-span-7",
-    icon: <Layout className="w-5 h-5 text-cyan-400" />,
-    accentColor: "from-cyan-500/20 to-transparent",
+    icon: <Layout className="w-5 h-5 text-brand-light" />,
+    accentColor: "from-brand/25 to-transparent",
     skills: [
       { name: "React", highlight: true },
       { name: "Next.js 14", highlight: true },
@@ -44,8 +44,8 @@ const techGroups: TechGroup[] = [
     subtitle: "Runtimes & Data",
     tagline: "Scalable APIs, ephemeral WebSockets, and resilient relational datastores.",
     colSpan: "md:col-span-5",
-    icon: <Database className="w-5 h-5 text-indigo-400" />,
-    accentColor: "from-indigo-500/20 to-transparent",
+    icon: <Database className="w-5 h-5 text-brand-light" />,
+    accentColor: "from-brand/20 to-transparent",
     skills: [
       { name: "Node.js", highlight: true },
       { name: "Express" },
@@ -61,8 +61,8 @@ const techGroups: TechGroup[] = [
     subtitle: "Intelligence Layer",
     tagline: "Leveraging frontier models to automate tasks, generate assets, and architect faster.",
     colSpan: "md:col-span-5",
-    icon: <Bot className="w-5 h-5 text-amber-300" />,
-    accentColor: "from-amber-500/20 to-transparent",
+    icon: <Bot className="w-5 h-5 text-brand-light" />,
+    accentColor: "from-brand/20 to-transparent",
     skills: [
       { name: "Claude 3.5 Sonnet", highlight: true },
       { name: "Google Gemini", highlight: true },
@@ -75,8 +75,8 @@ const techGroups: TechGroup[] = [
     subtitle: "DevOps & Infrastructure",
     tagline: "Zero-terminal automation, containerized desktop engines, and seamless CDN edge deploys.",
     colSpan: "md:col-span-7",
-    icon: <Terminal className="w-5 h-5 text-emerald-400" />,
-    accentColor: "from-emerald-500/20 to-transparent",
+    icon: <Terminal className="w-5 h-5 text-brand-light" />,
+    accentColor: "from-brand/25 to-transparent",
     skills: [
       { name: "Git / GitHub", highlight: true },
       { name: "Docker", highlight: true },
@@ -195,7 +195,7 @@ export const TechStackSection: React.FC = () => {
                     }`}
                   >
                     {skill.highlight && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/80" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-light" />
                     )}
                     <span>{skill.name}</span>
                   </span>

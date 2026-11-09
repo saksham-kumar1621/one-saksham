@@ -650,7 +650,7 @@ export const AdminPage: React.FC = () => {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-stroke mb-8">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-brand-light animate-pulse" />
             <span className="text-[11px] font-mono uppercase tracking-[0.3em] text-muted">
               Live Backend Control Panel
             </span>
@@ -681,9 +681,9 @@ export const AdminPage: React.FC = () => {
           <button
             onClick={handleSeed}
             title="Upload all default data into your Firebase Firestore"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface hover:bg-surface/80 border border-stroke text-xs text-text-primary hover:border-cyan-400/50 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface hover:bg-surface/80 border border-stroke text-xs text-text-primary hover:border-brand-light/50 transition-all cursor-pointer"
           >
-            <Database className="w-3.5 h-3.5 text-cyan-400" />
+            <Database className="w-3.5 h-3.5 text-brand-light" />
             <span>Seed to Firebase</span>
           </button>
 
@@ -762,7 +762,7 @@ export const AdminPage: React.FC = () => {
         <form onSubmit={handleSaveProfile} className="space-y-8">
           <div className="p-6 md:p-8 rounded-3xl bg-surface border border-stroke">
             <h2 className="text-xl font-display italic text-text-primary mb-6 flex items-center gap-2">
-              <User className="w-5 h-5 text-cyan-400" />
+              <User className="w-5 h-5 text-brand-light" />
               <span>Personal Identity & Hero Copy</span>
             </h2>
 
@@ -869,7 +869,7 @@ export const AdminPage: React.FC = () => {
           {/* Social Links & Contact Info */}
           <div className="p-6 md:p-8 rounded-3xl bg-surface border border-stroke">
             <h2 className="text-xl font-display italic text-text-primary mb-6 flex items-center gap-2">
-              <Key className="w-5 h-5 text-indigo-400" />
+              <Key className="w-5 h-5 text-brand-light" />
               <span>Contact & Social Presence</span>
             </h2>
 
@@ -983,7 +983,7 @@ export const AdminPage: React.FC = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {proj.featured && (
-                      <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-cyan-400 text-black text-[10px] font-mono uppercase font-bold tracking-wider">
+                      <span className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-full bg-brand-light text-black text-[10px] font-mono uppercase font-bold tracking-wider">
                         Featured
                       </span>
                     )}
@@ -1262,7 +1262,7 @@ export const AdminPage: React.FC = () => {
                       <span className="text-sm font-bold text-text-primary">{msg.name}</span>
                       <a
                         href={`mailto:${msg.email}`}
-                        className="text-xs font-mono text-cyan-400 hover:underline"
+                        className="text-xs font-mono text-brand-light hover:underline"
                       >
                         {msg.email}
                       </a>
@@ -1320,7 +1320,7 @@ export const AdminPage: React.FC = () => {
             <div className="flex items-start justify-between mb-6">
               <div>
                 <h2 className="text-xl font-display italic text-text-primary mb-1 flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-amber-400" />
+                  <Settings className="w-5 h-5 text-brand-light" />
                   <span>Firebase Project Configuration</span>
                 </h2>
                 <p className="text-xs text-muted">
@@ -1441,7 +1441,7 @@ export const AdminPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleSeed}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 text-xs font-medium transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand/10 hover:bg-brand/20 border border-brand/30 text-brand-light text-xs font-medium transition-colors cursor-pointer"
                   >
                     <Database className="w-3.5 h-3.5" />
                     <span>Upload & Seed Data to Firestore</span>
@@ -1544,7 +1544,7 @@ service cloud.firestore {
               </button>
             </div>
 
-            <pre className="p-4 rounded-2xl bg-bg text-xs font-mono text-cyan-300 border border-stroke overflow-x-auto max-h-96">
+            <pre className="p-4 rounded-2xl bg-bg text-xs font-mono text-brand-light border border-stroke overflow-x-auto max-h-96">
 {`rules_version = '2';
 
 service cloud.firestore {
@@ -1784,8 +1784,8 @@ service cloud.firestore {
                       </div>
                     ) : (
                       /* Mobile-friendly Upload Box */
-                      <div className="mb-3 p-5 sm:p-6 rounded-2xl border-2 border-dashed border-stroke/80 hover:border-cyan-400/50 bg-bg/40 flex flex-col items-center justify-center text-center transition-colors">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-stroke flex items-center justify-center mb-2.5 text-cyan-400">
+                      <div className="mb-3 p-5 sm:p-6 rounded-2xl border-2 border-dashed border-stroke/80 hover:border-brand-light/50 bg-bg/40 flex flex-col items-center justify-center text-center transition-colors">
+                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-stroke flex items-center justify-center mb-2.5 text-brand-light">
                           <ImageIcon className="w-5 h-5" />
                         </div>
                         <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition-colors cursor-pointer shadow-lg">
@@ -1802,8 +1802,8 @@ service cloud.firestore {
                           Directly select screenshots from your phone gallery or computer
                         </span>
 
-                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-800/40 text-[10px] font-mono text-cyan-300">
-                          <Sparkles className="w-3 h-3 text-cyan-400" />
+                        <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand/10 border border-brand/30 text-[10px] font-mono text-brand-light">
+                          <Sparkles className="w-3 h-3 text-brand-light" />
                           <span>Photo upload na karne par project ka real logo/emblem auto use hoga</span>
                         </div>
                       </div>
@@ -1839,7 +1839,7 @@ service cloud.firestore {
                       onChange={(e) =>
                         setProjectForm({ ...projectForm, featured: e.target.checked })
                       }
-                      className="w-4 h-4 rounded accent-cyan-400 cursor-pointer"
+                      className="w-4 h-4 rounded accent-brand cursor-pointer"
                     />
                     <label htmlFor="featCheck" className="text-xs text-text-primary cursor-pointer">
                       Feature on Homepage Selected Works
@@ -1961,7 +1961,7 @@ service cloud.firestore {
                       </div>
                     </div>
                   ) : (
-                    <div className="mb-3 p-4 rounded-2xl border-2 border-dashed border-stroke/80 hover:border-cyan-400/50 bg-bg/40 flex flex-col items-center justify-center text-center transition-colors">
+                    <div className="mb-3 p-4 rounded-2xl border-2 border-dashed border-stroke/80 hover:border-brand-light/50 bg-bg/40 flex flex-col items-center justify-center text-center transition-colors">
                       <label className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition-colors cursor-pointer shadow-lg">
                         <Upload className="w-3.5 h-3.5" />
                         <span>Upload Artwork from Device</span>

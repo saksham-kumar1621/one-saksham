@@ -39,7 +39,7 @@ export const AboutPage: React.FC = () => {
         {/* Left Column: Story & Philosophy */}
         <div className="lg:col-span-7 flex flex-col gap-6 text-sm sm:text-base text-muted leading-relaxed">
           <div className="p-6 rounded-3xl bg-surface/40 border border-stroke text-text-primary">
-            <span className="text-xs uppercase font-mono tracking-widest text-cyan-400 block mb-2">
+            <span className="text-xs uppercase font-mono tracking-widest text-brand-light block mb-2">
               Mission Statement
             </span>
             <p className="text-xl sm:text-2xl font-display italic leading-snug">
@@ -61,15 +61,15 @@ export const AboutPage: React.FC = () => {
 
           <div className="pt-4 border-t border-stroke/40 flex flex-wrap gap-4 text-xs font-mono">
             <div className="flex items-center gap-2 text-text-primary">
-              <MapPin className="w-4 h-4 text-cyan-400" />
+              <MapPin className="w-4 h-4 text-brand-light" />
               <span>Muzaffarpur, Bihar, India</span>
             </div>
             <div className="flex items-center gap-2 text-text-primary">
-              <Sparkles className="w-4 h-4 text-amber-300" />
+              <Sparkles className="w-4 h-4 text-brand-light" />
               <span>Full Stack & Desktop Dev</span>
             </div>
             <div className="flex items-center gap-2 text-text-primary">
-              <Terminal className="w-4 h-4 text-emerald-400" />
+              <Terminal className="w-4 h-4 text-brand-light" />
               <span>Real-Time & Optimization</span>
             </div>
           </div>
@@ -108,7 +108,7 @@ export const AboutPage: React.FC = () => {
                 <h3 className="text-2xl font-display italic text-text-primary tracking-tight leading-tight">
                   {personalInfo.fullName}
                 </h3>
-                <p className="text-xs font-mono text-cyan-400 font-medium">
+                <p className="text-xs font-mono text-brand-light font-medium">
                   @{personalInfo.alias} • Full Stack &amp; Design
                 </p>
               </div>
@@ -131,7 +131,7 @@ export const AboutPage: React.FC = () => {
                     <GithubIcon className="w-3.5 h-3.5" />
                     <span>GitHub Profile</span>
                   </span>
-                  <span className="text-muted font-mono text-[11px] group-hover/link:text-cyan-300 transition-colors">
+                  <span className="text-muted font-mono text-[11px] group-hover/link:text-brand-light transition-colors">
                     @saksham-kumar1621 →
                   </span>
                 </a>
@@ -143,10 +143,10 @@ export const AboutPage: React.FC = () => {
                   className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 hover:text-white transition-all group/link"
                 >
                   <span className="flex items-center gap-2">
-                    <Compass className="w-3.5 h-3.5 text-rose-400" />
+                    <Compass className="w-3.5 h-3.5 text-brand-light" />
                     <span>Pinterest Inspiration</span>
                   </span>
-                  <span className="text-muted font-mono text-[11px] group-hover/link:text-rose-300 transition-colors">
+                  <span className="text-muted font-mono text-[11px] group-hover/link:text-brand-light transition-colors">
                     @OneSaksham1621 →
                   </span>
                 </a>
@@ -156,10 +156,10 @@ export const AboutPage: React.FC = () => {
                   className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 hover:text-white transition-all group/link"
                 >
                   <span className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-cyan-400" />
+                    <Mail className="w-3.5 h-3.5 text-brand-light" />
                     <span>Direct Email</span>
                   </span>
-                  <span className="text-muted font-mono text-[11px] truncate max-w-[150px] group-hover/link:text-cyan-300 transition-colors">
+                  <span className="text-muted font-mono text-[11px] truncate max-w-[150px] group-hover/link:text-brand-light transition-colors">
                     {personalInfo.email}
                   </span>
                 </a>
@@ -170,14 +170,14 @@ export const AboutPage: React.FC = () => {
           {/* Quick Pillars */}
           <div className="grid grid-cols-2 gap-4">
             <div className="p-5 rounded-2xl bg-surface/30 border border-stroke">
-              <Cpu className="w-5 h-5 text-indigo-400 mb-2" />
+              <Cpu className="w-5 h-5 text-brand-light mb-2" />
               <div className="text-base font-semibold text-text-primary">Performance</div>
               <p className="text-[11px] text-muted mt-1">
                 Zero-lag, sub-16ms render loops and lightweight bundles.
               </p>
             </div>
             <div className="p-5 rounded-2xl bg-surface/30 border border-stroke">
-              <Sparkles className="w-5 h-5 text-amber-300 mb-2" />
+              <Sparkles className="w-5 h-5 text-brand-light mb-2" />
               <div className="text-base font-semibold text-text-primary">Aesthetics</div>
               <p className="text-[11px] text-muted mt-1">
                 Dark themes, tactile motion, and typographic tension.

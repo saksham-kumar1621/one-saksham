@@ -191,7 +191,7 @@ export const Footer: React.FC = () => {
 
             {/* Address & CMS Link */}
             <div className="flex flex-wrap items-center justify-center sm:justify-end gap-1.5 text-[11px] text-muted/70">
-              <MapPin className="w-3 h-3 text-cyan-400/80 shrink-0" />
+              <MapPin className="w-3 h-3 text-brand-light shrink-0" />
               <span>{personalInfo.location}</span>
               <span className="text-stroke/60">•</span>
               <Link
