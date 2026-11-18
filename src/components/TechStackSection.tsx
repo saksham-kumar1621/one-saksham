@@ -1,11 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { 
-  Layout, 
-  Database, 
-  Bot, 
-  Terminal, 
-  ArrowUpRight 
+import {
+  Layout,
+  Database,
+  Bot,
+  Terminal,
+  ArrowUpRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -188,11 +188,10 @@ export const TechStackSection: React.FC = () => {
                 {group.skills.map((skill) => (
                   <span
                     key={skill.name}
-                    className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 cursor-default select-none ${
-                      skill.highlight
+                    className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-mono transition-all duration-200 cursor-default select-none ${skill.highlight
                         ? "bg-bg border border-stroke text-text-primary hover:border-white/30 hover:scale-105"
                         : "bg-bg/60 border border-stroke/60 text-muted hover:text-text-primary hover:border-stroke"
-                    }`}
+                      }`}
                   >
                     {skill.highlight && (
                       <span className="w-1.5 h-1.5 rounded-full bg-brand-light" />

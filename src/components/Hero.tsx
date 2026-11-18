@@ -1,49 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Hls from "hls.js";
 import gsap from "gsap";
 import { ArrowRight, MapPin, Sparkles } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
-
-const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
+import { HeroBackground } from "./HeroBackground";
 
 export const Hero: React.FC = () => {
   const { personalInfo } = usePortfolio();
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [roleIndex, setRoleIndex] = useState<number>(0);
-
-  // Setup HLS video playback
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    let hls: Hls | null = null;
-
-    if (Hls.isSupported()) {
-      hls = new Hls({
-        autoStartLoad: true,
-        startLevel: -1,
-        capLevelToPlayerSize: true,
-      });
-      hls.loadSource(HLS_STREAM_URL);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {});
-      });
-    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = HLS_STREAM_URL;
-      video.addEventListener("loadedmetadata", () => {
-        video.play().catch(() => {});
-      });
-    }
-
-    return () => {
-      if (hls) {
-        hls.destroy();
-      }
-    };
-  }, []);
 
   // Roles cycle every 2 seconds
   useEffect(() => {
@@ -81,23 +46,8 @@ export const Hero: React.FC = () => {
       ref={containerRef}
       className="relative min-h-[92vh] w-full flex flex-col items-center justify-center overflow-hidden bg-bg px-4 sm:px-6 pt-28 pb-20"
     >
-      {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover opacity-65"
-        />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/35 backdrop-brightness-75" />
-        {/* Radial vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-bg/40 to-bg" />
-        {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg via-bg/80 to-transparent" />
-      </div>
+      {/* Interactive Ambient Craft Background */}
+      <HeroBackground />
 
       {/* Hero Content (centered, z-10) */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
