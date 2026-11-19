@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ArrowRight, MapPin, Sparkles } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
-import { HeroBackground } from "./HeroBackground";
 
 export const Hero: React.FC = () => {
   const { personalInfo } = usePortfolio();
@@ -46,9 +45,6 @@ export const Hero: React.FC = () => {
       ref={containerRef}
       className="relative min-h-[92vh] w-full flex flex-col items-center justify-center overflow-hidden bg-bg px-4 sm:px-6 pt-28 pb-20"
     >
-      {/* Interactive Ambient Craft Background */}
-      <HeroBackground />
-
       {/* Hero Content (centered, z-10) */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center text-center">
         {/* Location & Status Badge */}
