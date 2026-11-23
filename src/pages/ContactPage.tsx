@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Compass, MapPin, Send, Check, Copy, Clock, Sparkles, ArrowUpRight, Mail } from "lucide-react";
 import { GithubIcon } from "../components/icons/GithubIcon";
+import { InstagramIcon } from "../components/icons/InstagramIcon";
+import { LinktreeIcon } from "../components/icons/LinktreeIcon";
 import { usePortfolio } from "../context/PortfolioContext";
 
 export const ContactPage: React.FC = () => {
@@ -165,13 +167,14 @@ export const ContactPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Social Badges */}
+          {/* Social & Profile Badges (4-Entity Cluster) */}
           <div className="grid grid-cols-2 gap-3 sm:gap-4">
             <a
               href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
               className="p-4 sm:p-5 rounded-2xl bg-surface/40 border border-stroke/80 hover:bg-surface hover:border-brand-light/40 transition-all group flex flex-col justify-between shadow-sm active:scale-[0.99] touch-manipulation"
+              title="One Saksham on GitHub"
             >
               <GithubIcon className="w-5 h-5 sm:w-6 sm:h-6 text-text-primary mb-3 group-hover:scale-110 transition-transform" />
               <div>
@@ -183,10 +186,43 @@ export const ContactPage: React.FC = () => {
             </a>
 
             <a
+              href={personalInfo.instagram || "https://instagram.com/onesaksham"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-4 sm:p-5 rounded-2xl bg-surface/40 border border-stroke/80 hover:bg-surface hover:border-brand-light/40 transition-all group flex flex-col justify-between shadow-sm active:scale-[0.99] touch-manipulation"
+              title="One Saksham on Instagram"
+            >
+              <InstagramIcon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-light mb-3 group-hover:scale-110 transition-transform" />
+              <div>
+                <span className="text-[10px] sm:text-xs text-muted block font-mono">Instagram</span>
+                <span className="text-xs sm:text-sm font-medium text-text-primary truncate block">
+                  @onesaksham
+                </span>
+              </div>
+            </a>
+
+            <a
+              href={personalInfo.linktree || "https://linktr.ee/onesaksham"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-4 sm:p-5 rounded-2xl bg-surface/40 border border-stroke/80 hover:bg-surface hover:border-brand-light/40 transition-all group flex flex-col justify-between shadow-sm active:scale-[0.99] touch-manipulation"
+              title="One Saksham on Linktree"
+            >
+              <LinktreeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-400 mb-3 group-hover:scale-110 transition-transform" />
+              <div>
+                <span className="text-[10px] sm:text-xs text-muted block font-mono">Linktree</span>
+                <span className="text-xs sm:text-sm font-medium text-text-primary truncate block">
+                  linktr.ee/onesaksham
+                </span>
+              </div>
+            </a>
+
+            <a
               href={personalInfo.pinterest}
               target="_blank"
               rel="noopener noreferrer"
               className="p-4 sm:p-5 rounded-2xl bg-surface/40 border border-stroke/80 hover:bg-surface hover:border-brand-light/40 transition-all group flex flex-col justify-between shadow-sm active:scale-[0.99] touch-manipulation"
+              title="One Saksham on Pinterest"
             >
               <Compass className="w-5 h-5 sm:w-6 sm:h-6 text-brand-light mb-3 group-hover:scale-110 transition-transform" />
               <div>

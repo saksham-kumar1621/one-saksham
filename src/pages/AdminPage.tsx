@@ -46,6 +46,8 @@ import {
 import type { ProjectItem, ExplorationItem } from "../data/portfolioData";
 import { PinterestIcon } from "../components/icons/PinterestIcon";
 import { GithubIcon } from "../components/icons/GithubIcon";
+import { InstagramIcon } from "../components/icons/InstagramIcon";
+import { LinktreeIcon } from "../components/icons/LinktreeIcon";
 
 /**
  * Mobile-friendly client-side image compression:
@@ -172,6 +174,8 @@ export const AdminPage: React.FC = () => {
     bio: personalInfo.bio,
     email: personalInfo.email,
     github: personalInfo.github,
+    instagram: personalInfo.instagram || "",
+    linktree: personalInfo.linktree || "",
     pinterest: personalInfo.pinterest,
     avatar: personalInfo.avatar,
     rolesCycle: personalInfo.rolesCycle.join(", "),
@@ -920,6 +924,32 @@ export const AdminPage: React.FC = () => {
                   type="text"
                   value={profileForm.github}
                   onChange={(e) => setProfileForm({ ...profileForm, github: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-mono uppercase text-muted block mb-2 flex items-center gap-1.5">
+                  <LinktreeIcon className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Linktree Profile Link</span>
+                </label>
+                <input
+                  type="text"
+                  value={profileForm.linktree}
+                  onChange={(e) => setProfileForm({ ...profileForm, linktree: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
+                />
+              </div>
+
+              <div>
+                <label className="text-[11px] font-mono uppercase text-muted block mb-2 flex items-center gap-1.5">
+                  <InstagramIcon className="w-3.5 h-3.5 text-pink-400" />
+                  <span>Instagram Profile Link</span>
+                </label>
+                <input
+                  type="text"
+                  value={profileForm.instagram}
+                  onChange={(e) => setProfileForm({ ...profileForm, instagram: e.target.value })}
                   className="w-full px-4 py-2.5 rounded-xl bg-bg border border-stroke text-sm text-text-primary focus:outline-none focus:border-white/40"
                 />
               </div>

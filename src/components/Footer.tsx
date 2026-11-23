@@ -1,51 +1,17 @@
 import React, { useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import Hls from "hls.js";
 import gsap from "gsap";
 import { ArrowUpRight, Mail, Lock, MapPin } from "lucide-react";
 import { GithubIcon } from "./icons/GithubIcon";
+import { InstagramIcon } from "./icons/InstagramIcon";
+import { LinktreeIcon } from "./icons/LinktreeIcon";
 import { PinterestIcon } from "./icons/PinterestIcon";
 import { usePortfolio } from "../context/PortfolioContext";
-
-const HLS_STREAM_URL = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
 
 export const Footer: React.FC = () => {
   const { personalInfo } = usePortfolio();
   const location = useLocation();
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const marqueeRef = useRef<HTMLDivElement | null>(null);
-
-  // Setup flipped background video with hls.js
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    let hls: Hls | null = null;
-
-    if (Hls.isSupported()) {
-      hls = new Hls({
-        autoStartLoad: true,
-        startLevel: -1,
-        capLevelToPlayerSize: true,
-      });
-      hls.loadSource(HLS_STREAM_URL);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {});
-      });
-    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-      video.src = HLS_STREAM_URL;
-      video.addEventListener("loadedmetadata", () => {
-        video.play().catch(() => {});
-      });
-    }
-
-    return () => {
-      if (hls) {
-        hls.destroy();
-      }
-    };
-  }, []);
 
   // GSAP Marquee: xPercent: -50, duration: 38, ease: "none", repeat: -1
   useEffect(() => {
@@ -73,23 +39,8 @@ export const Footer: React.FC = () => {
       id="contact-footer"
       className="relative bg-bg pt-16 md:pt-24 pb-12 sm:pb-8 md:pb-12 overflow-hidden border-t border-stroke/30"
     >
-      {/* Background Video (Flipped Vertically) */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover scale-y-[-1] opacity-45"
-        />
-        {/* Darkening overlay */}
-        <div className="absolute inset-0 bg-black/65 backdrop-blur-sm" />
-        {/* Top gradient fade into footer */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg to-transparent" />
-        {/* Bottom gradient fade for crystal-clear baseline legibility */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg via-bg/90 to-transparent" />
-      </div>
+      {/* Subtle radial ambient background glow */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-brand/5 via-bg/40 to-bg pointer-events-none select-none" />
 
       {/* GSAP Marquee Banner */}
       <div className="relative z-10 w-full overflow-hidden py-4 border-y border-stroke/40 backdrop-blur-sm bg-bg/40 mb-14 md:mb-20">
@@ -135,24 +86,54 @@ export const Footer: React.FC = () => {
 
         {/* Footer Bottom Bar */}
         <div className="w-full pt-8 sm:pt-10 border-t border-stroke/40 flex flex-col sm:flex-row items-center justify-between gap-6">
-          {/* 1. Social Links (Original sleek text with hover arrow) */}
-          <div className="flex items-center gap-6 sm:gap-8">
+          {/* 1. Social Links (Crawlable entity channels: GitHub, Instagram, Linktree, Pinterest, Email) */}
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6 md:gap-7">
             <a
               href={personalInfo.github}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+              title="One Saksham on GitHub"
             >
               <GithubIcon className="w-4 h-4" />
               <span>GitHub</span>
               <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
             </a>
 
+            {personalInfo.instagram && (
+              <a
+                href={personalInfo.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+                title="One Saksham on Instagram"
+              >
+                <InstagramIcon className="w-4 h-4" />
+                <span>Instagram</span>
+                <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+              </a>
+            )}
+
+            {personalInfo.linktree && (
+              <a
+                href={personalInfo.linktree}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+                title="One Saksham on Linktree"
+              >
+                <LinktreeIcon className="w-4 h-4" />
+                <span>Linktree</span>
+                <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
+              </a>
+            )}
+
             <a
               href={personalInfo.pinterest}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+              title="One Saksham on Pinterest"
             >
               <PinterestIcon className="w-4 h-4" />
               <span>Pinterest</span>
@@ -162,7 +143,9 @@ export const Footer: React.FC = () => {
             <a
               href={`mailto:${personalInfo.email}`}
               className="text-xs sm:text-sm text-muted hover:text-text-primary transition-colors flex items-center gap-1.5 group"
+              title="Contact One Saksham via Email"
             >
+              <Mail className="w-4 h-4" />
               <span>Email</span>
               <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-200" />
             </a>

@@ -2,6 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MapPin, Mail, Compass, Sparkles, Terminal, Cpu } from "lucide-react";
 import { GithubIcon } from "../components/icons/GithubIcon";
+import { InstagramIcon } from "../components/icons/InstagramIcon";
+import { LinktreeIcon } from "../components/icons/LinktreeIcon";
 import { usePortfolio } from "../context/PortfolioContext";
 
 export const AboutPage: React.FC = () => {
@@ -133,6 +135,36 @@ export const AboutPage: React.FC = () => {
                   </span>
                   <span className="text-muted font-mono text-[11px] group-hover/link:text-brand-light transition-colors">
                     @saksham-kumar1621 →
+                  </span>
+                </a>
+
+                <a
+                  href={personalInfo.linktree}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 hover:text-white transition-all group/link"
+                >
+                  <span className="flex items-center gap-2">
+                    <LinktreeIcon className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Linktree Hub</span>
+                  </span>
+                  <span className="text-muted font-mono text-[11px] group-hover/link:text-emerald-400 transition-colors">
+                    @onesaksham →
+                  </span>
+                </a>
+
+                <a
+                  href={personalInfo.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between px-4 py-2.5 rounded-xl bg-bg border border-stroke text-xs text-text-primary hover:border-text-primary/40 hover:text-white transition-all group/link"
+                >
+                  <span className="flex items-center gap-2">
+                    <InstagramIcon className="w-3.5 h-3.5 text-pink-400" />
+                    <span>Instagram</span>
+                  </span>
+                  <span className="text-muted font-mono text-[11px] group-hover/link:text-pink-400 transition-colors">
+                    @onesaksham →
                   </span>
                 </a>
 

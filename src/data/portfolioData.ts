@@ -31,6 +31,8 @@ export interface PersonalInfo {
   bio: string;
   email: string;
   github: string;
+  instagram: string;
+  linktree: string;
   pinterest: string;
   avatar: string;
   status: string;
@@ -66,6 +68,8 @@ export const PERSONAL_INFO: PersonalInfo = {
   bio: "Full stack developer and UI/UX designer obsessed with high-performance desktop apps, quirky web tools, and zero-friction real-time experiences. Crafting products that solve everyday headaches with bold aesthetic taste.",
   email: "sakshamkumar1621@gmail.com",
   github: "https://github.com/saksham-kumar1621",
+  instagram: "https://instagram.com/onesaksham",
+  linktree: "https://linktr.ee/onesaksham",
   pinterest: "https://in.pinterest.com/OneSaksham1621/",
   avatar: "https://avatars.githubusercontent.com/u/196009222?v=4",
   status: "Available for freelance & collaborations",
